@@ -1,0 +1,18 @@
+{
+  "name": "node-graph",
+  "version": "0.0.0",
+  "description": "Simple graph application.",
+  "main": "server.js",
+  "author": "Wwine",
+  "dependencies": {
+    "arangojs": "^5.0.2",
+    "body-parser": "^1.4.3",
+    "express": "^4.13.4",
+    "gulp": "^3.9.1",
+    "gulp-less": "^3.1.0",
+    "less": "^2.7.1",
+    "method-override": "^2.1.3",
+    "morgan": "^1.1.1",
+    "path": "^0.12.7"
+  }
+}

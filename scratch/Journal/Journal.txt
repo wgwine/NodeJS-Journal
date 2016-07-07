@@ -1,0 +1,325 @@
+/**Attempt to create a node website from scratch, using ArangoDB as data store.**/
+
+///I wanted to use something different for the DB so that I won't simply be following the tutorials, but rather building something of my own. 
+///This will force me to learn something rather than just going through the motions.
+
+///I will be starting with this guide: https://scotch.io/tutorials/creating-a-single-page-todo-app-with-node-and-angular
+///I installed Node.js, which comes with NPM.
+///ArangoDB is already installed and some data is there. I was using it for a side project with C# in the past
+
+
+///Created a folder in c:/node called "scratch". C:/node/scratch
+///Create empty files reflecting the tutorial site above:
+- public 
+----- core.js
+----- index.html
+- package.json
+- server.js
+
+///Paste contents into package.json, change name,description, etc
+{
+  "name"         : "node-scratch",
+  "version"      : "0.0.0",
+  "description"  : "Simple scratch application.",
+  "main"         : "server.js",
+  "author"       : "Author",
+  "dependencies" : {
+    "body-parser"    : "^1.4.3",
+    "express"        : "^4.13.4",
+    "method-override": "^2.1.3",
+    "mongoose"       : "^4.4.12",
+    "morgan"         : "^1.1.1"
+  }
+}
+///Open cmd to c:/node/scratch
+///"npm install"
+///Stuff happens, yellow folder tree displays, no errors.
+
+///Paste contents into server.js from tutorial:
+var express  = require('express');
+var app      = express();                               // create our app w/ express
+var mongoose = require('mongoose');                     // mongoose for mongodb
+var morgan = require('morgan');             // log requests to the console (express4)
+var bodyParser = require('body-parser');    // pull information from HTML POST (express4)
+var methodOverride = require('method-override'); // simulate DELETE and PUT (express4)
+
+mongoose.connect('mongodb://node:nodeuser@mongo.onmodulus.net:27017/uwO3mypu');     // connect to mongoDB database on modulus.io
+
+app.use(express.static(__dirname + '/public'));                 // set the static files location /public/img will be /img for users
+app.use(morgan('dev'));                                         // log every request to the console
+app.use(bodyParser.urlencoded({'extended':'true'}));            // parse application/x-www-form-urlencoded
+app.use(bodyParser.json());                                     // parse application/json
+app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
+app.use(methodOverride());
+
+app.listen(8080);
+console.log("App listening on port 8080");
+
+
+///I wont be using mongodb. Head over to https://www.arangodb.com/tutorials/arangodb-node-js/
+///this site tells me to "npm install arangojs@5"
+///I do this, and it installs, but the package.json file doesn't have a reference to this. I assume that means the module was downloaded to node_modules folder.
+///This seems like a problem to me. 
+///All node seed projects I have seen start with telling you to run "npm install". If the reference to arango isnt in package.json, it won't get installed.
+///http://stackoverflow.com/a/14676564 
+///Turns out you need to use "npm install arangojs@5 --save"
+///Now I have this in package.json
+{
+  "name": "node-scratch",
+  "version": "0.0.0",
+  "description": "Simple scratch application.",
+  "main": "server.js",
+  "author": "Author",
+  "dependencies": {
+    "arangojs": "^5.0.2",
+    "body-parser": "^1.4.3",
+    "express": "^4.13.4",
+    "method-override": "^2.1.3",
+    "mongoose": "^4.4.12",
+    "morgan": "^1.1.1"
+  }
+}
+///I still won't need mongo/mongoose though. And it was already installed into node_modules. How do I get rid of it?
+///First I remove it from the package.json dependencies.
+  "dependencies": {
+    "arangojs": "^5.0.2",
+    "body-parser": "^1.4.3",
+    "express": "^4.13.4",
+    "method-override": "^2.1.3",
+    "morgan": "^1.1.1"
+  }
+///Then I use "npm prune" to clean up the node_modules folder using the new dependency list. (https://docs.npmjs.com/cli/prune)
+
+
+///Now I will take the mongo stuff out of server.js
+var express  = require('express');
+var app      = express();
+var morgan = require('morgan');
+var bodyParser = require('body-parser');
+var methodOverride = require('method-override'); 
+
+app.use(express.static(__dirname + '/public'));
+app.use(morgan('dev'));
+app.use(bodyParser.urlencoded({'extended':'true'}));
+app.use(bodyParser.json());
+app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
+app.use(methodOverride());
+
+app.listen(8080);
+console.log("App listening on port 8080");
+
+///I will run the site now and see what happens.
+c:/node/scratch>node server.js
+App listening on port 8080
+///I go to http://localhost:8080/ in the browser, blank screen, that's what I expected.
+
+/**In the command line, use ctrl+c to kill the site without having to close the window**/
+
+
+///Time to add some ArangoDB stuff. After fiddling with the arangodb-node-js guide, I have the following:
+var express  = require('express');
+var app      = express();
+var Database = require('arangojs').Database;
+var aqlQuery = require('arangojs').aqlQuery;
+var morgan = require('morgan');
+var bodyParser = require('body-parser');
+var methodOverride = require('method-override');
+
+var db = new Database('http://127.0.0.1:8529');
+db.useDatabase('NodeStore');
+collection = db.collection('Nodes');
+
+db.query(aqlQuery`
+    FOR d IN ${collection} RETURN d
+`).then(
+    cursor => cursor.map(doc => doc._key)
+).then(
+    keys => console.log('Document Keys:', keys.join(', ')),
+    err => console.error('Failed:', err)
+);
+
+app.use(express.static(__dirname + '/public'));
+app.use(morgan('dev'));
+app.use(bodyParser.urlencoded({'extended':'true'}));
+app.use(bodyParser.json());
+app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
+app.use(methodOverride());
+
+app.listen(8080);
+console.log("App listening on port 8080");
+
+///Now I get this in the console:
+App listening on port 8080
+Document Keys: 721580268640, 789500458557, 789164783165, 747021135084, 789511599
+677, 721585249376, 710427356200, 721585904736, 789161309757, 789534930493, 71043
+0305320
+///Good, that means I was able to connect to my Arango instance and retrieve data from a collection.
+
+///Now back to the original tutorial.
+//mongoose.model, I won't be needing that. Skipping on to routing. 
+
+app.get('/api/todos', function(req, res) {
+    // use mongoose to get all todos in the database
+    Todo.find(function(err, todos) {
+        // if there is an error retrieving, send the error. nothing after res.send(err) will execute
+        if (err)
+            res.send(err)
+        res.json(todos); // return all todos in JSON format
+    });
+});
+///I can see this sets up an endpoint, and responds to requests with some data. But it is tied to mongo, I need to change this for Arango.
+app.get('/api/nodes', function(req, res) {
+    db.query(aqlQuery`
+        FOR d IN ${collection} RETURN d
+    `).then(
+        cursor => cursor.map(doc => doc._key)
+    ).then(
+        keys =>  res.json(keys),
+        err => console.error('Failed:', err)
+    );
+});
+///I don't really understand this ES6 arrow thing yet, but I was able to figure out that it is a shorthand function(){} syntax. 
+///So where I was logging all the keys to the console before, I use the res.json(...) syntax from the tutorial in it's place
+///I run the app again, and go to http://localhost:8080/api/nodes in the browser. I see:
+["721580268640","789500458557","789164783165","747021135084","789511599677","721585249376","710427356200","721585904736","789161309757","789534930493","710430305320"]
+///which means this is working correctly. I now have an api that returns data. 
+
+
+///I need a front end now. The tutorial uses Angular, which is fine by me. I add this route after the API route
+app.get('*', function(req, res) {
+    res.sendfile('./public/index.html');
+});
+
+///Then I will paste some angular SPA stuff into core.js, changing things for my purposes.
+var scratch = angular.module('scratch', []);
+function mainController($scope, $http) {
+    $http.get('/api/nodes')
+        .success(function(data) {
+            $scope.nodes = data;
+            console.log(data);
+        })
+        .error(function(data) {
+            console.log('Error: ' + data);
+        });
+}
+///I need to set up index.html now. One thing I will be changing for sure is the version of Angular. 
+///The tutorial uses Angular 1.0.8. I will be using 1.5.7
+///I will also be using jquery 3.0.0 instead of 2.0.3
+///In the end, my index.html looks like this:
+<!doctype html>
+<html ng-app="scratchApp">
+    <head>
+        <title>Node/Angular Scratch App</title>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+        <script src="core.js"></script>
+
+    </head>
+    <body ng-controller="mainController" ng-cloak>
+        <div class="container">
+            <div class="jumbotron text-center">
+                <h1>Nodes <span class="label label-info">{{ nodes.length }}</span></h1>
+            </div>
+            <div id="todo-list" class="row">
+                <div class="col-sm-4 col-sm-offset-4">
+                    <div ng-repeat="node in nodes">
+                        {{ node }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+
+///So now I have a node.js website with an API that returns data from ArangoDB, and an angular SPA to consume that API. 
+///That is enough to start building things, and the tutorial ends there. 
+
+///But I want to learn a few more things. What about gulp/grunt, or browserfy/webpack? 
+///What do they even do? 
+
+///Grunt and Gulp are task runners. Webpack and browserfy are bundlers. Pretty simple. 
+"Continuing further on this path, JSPM pushes package management directly to the browser. It relies on System.js, a dynamic module loader. Webpack 2 will support System.js semantics as well."
+///Alright, i'm getting lost again. I'll start with Gulp, because it's newer than Grunt. I don't have anything else to go on at this point. 
+///Developers use it for stuff right? I'll install it and see what I can make it do.
+npm install gulp --save
+///Create a gulpfile.js at the root of your project:
+var gulp = require('gulp');
+gulp.task('default', function() {
+});
+
+//Run gulp:
+gulp
+[15:33:35] Using gulpfile C:\node\scratch\gulpfile.js
+[15:33:35] Starting 'default'...
+[15:33:35] Finished 'default' after 60 µs
+///OK it runs, but doesn't do anything yet. That's fine, there isn't anything for it to do yet. I only have one script file and no CSS yet. 
+///I want to use LESS, and that seems like something Gulp can help with. I'll start by installing it
+npm install less --save
+///And I guess I need to get the gulp plugin as well
+npm install gulp-less --save
+//Then I add the following to gulpfile.js
+var less = require('gulp-less');
+var path = require('path');
+ 
+gulp.task('less', function () {
+  return gulp.src('./less/**/*.less')
+    .pipe(less({
+      paths: [ path.join(__dirname, 'less', 'includes') ]
+    }))
+    .pipe(gulp.dest('./public/css'));
+});
+///That "less" folder doesnt exist yet. I create it, and create scratch.less inside it. I put the following in scratch.less, so I can verify that LESS gets compiled at the end.
+.outer{
+  width:100px;
+  height:100px;
+  background:#000;
+  .inner{
+    width:50px;
+    height:50px;
+    background:#0f0;
+  }
+}
+///Then I add this to index.html
+<div class="outer"><div class="inner"></div></div>
+
+///I'll run gulp again and see what happens.
+[15:48:11] Using gulpfile C:\node\scratch\gulpfile.js
+[15:48:11] Starting 'default'...
+[15:48:11] Finished 'default' after 62 µs
+///It didn't run my new task. What gives? 
+///I tried a bunch of things to get it to work, but I ended up having to look at someone else's gulpfile. 
+gulp.task('less', function () {
+  return gulp.src('./less/**/*.less')
+    .pipe(less({
+      paths: [ path.join(__dirname, 'less', 'includes') ]
+    }))
+    .pipe(gulp.dest('./public/css'))
+});
+gulp.task('default', [
+    'less'
+]);
+///Apparently, only the default task runs when you enter "gulp" in the command line, and I needed to reference the 'less' task inside the default task.
+///This seems like information that would have been especially useful on
+///https://github.com/plus3network/gulp-less
+///https://www.npmjs.com/package/gulp-less/
+///https://www.smashingmagazine.com/2014/06/building-with-gulp/
+///https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md
+///https://github.com/gulpjs/gulp/blob/master/docs/API.md
+///But there was no mention of it. I did discover that you can manually run a specific gulp task in the command line:
+gulp less
+///So now LESS compilation is working. I check scratch.css and see:
+.outer {
+  width: 100px;
+  height: 100px;
+  background: #000;
+}
+.outer .inner {
+  width: 50px;
+  height: 50px;
+  background: #0f0;
+}
+///I add a reference in index.html
+<link rel="stylesheet" href="css/scratch.css">
+///I run the server again, and I see a black box with a smaller green box inside.

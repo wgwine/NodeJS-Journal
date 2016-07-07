@@ -1,0 +1,31 @@
+<!doctype html>
+<html ng-app="scratchApp">
+    <head>
+        <!-- META -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Node/Angular Scratch App</title>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/scratch.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+        <script src="core.js"></script>
+    </head>
+
+    <body ng-controller="mainController" ng-cloak>
+        <div class="container">
+            <div class="jumbotron text-center">
+                <h1>Nodes <span class="label label-info">{{ nodes.length }}</span></h1>
+            </div>
+            <div class="outer"><div class="inner"></div></div>
+            <div id="todo-list" class="row">
+                <div class="col-sm-4 col-sm-offset-4">
+                    <div  ng-repeat="node in nodes">
+                            {{ node }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

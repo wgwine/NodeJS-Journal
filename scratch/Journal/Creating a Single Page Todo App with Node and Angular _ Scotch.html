@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<!-- saved from url=(0081)https://scotch.io/tutorials/creating-a-single-page-todo-app-with-node-and-angular -->
+<html itemscope="" itemtype="http://schema.org/Article" lang="en-US" class="wf-acuminpro-i3-active wf-acuminpro-i4-active wf-acuminpro-i7-active wf-acuminpro-n3-active wf-acuminpro-n4-active wf-acuminpro-n7-active wf-lato-i4-active wf-lato-i7-active wf-lato-n4-active wf-lato-n7-active wf-sourcecodepro-i4-active wf-sourcecodepro-n4-active wf-active"><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 
+
+ 
+<title>Creating a Single Page Todo App with Node and Angular | Scotch</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="google-site-verification" content="NoKkRtzSguNO3Xd1cuhpVkUoh7n8mz-aofV9Ch4aS8w">
+<meta name="theme-color" content="#222222">
+ 
+<script async="" data-rocketsrc="//www.google-analytics.com/analytics.js" data-rocketoptimized="true"></script><script data-rocketsrc="https://pagead2.googlesyndication.com/pub-config/r20160212/ca-pub-4625466825098355.js" data-rocketoptimized="true"></script><script async="" src="./Creating a Single Page Todo App with Node and Angular _ Scotch_files/fbevents.js"></script><script type="text/javascript" async="" src="./Creating a Single Page Todo App with Node and Angular _ Scotch_files/conversion_async.js"></script><script async="" src="./Creating a Single Page Todo App with Node and Angular _ Scotch_files/gtm.js"></script><script type="text/javascript">
+//<![CDATA[
+try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:1467906868,byc:0,owlid:"cf",bag2:1,mirage2:0,oracle:0,paths:{cloudflare:"/cdn-cgi/nexp/dok3v=1613a3a185/"},atok:"f69373a7603218d0ca793a59d39bf507",petok:"62c3f8c93388605257adb9e7e3cedbeb74232f58-1467911689-86400",zone:"scotch.io",rocket:"m",apps:{},sha2test:0}];document.write('<script type="text/javascript" src="//ajax.cloudflare.com/cdn-cgi/nexp/dok3v=e982913d31/cloudflare.min.js"><'+'\/script>');}}catch(e){};
+//]]>
+</script><script type="text/javascript" src="./Creating a Single Page Todo App with Node and Angular _ Scotch_files/cloudflare.min.js"></script><style type="text/css">.cf-hidden { display: none; } .cf-invisible { visibility: hidden; }</style><script data-module="cloudflare/rocket" id="cfjs_block_10886f9ad87" onload="CloudFlare.__cfjs_block_10886f9ad87_load()" onerror="CloudFlare.__cfjs_block_10886f9ad87_error()" onreadystatechange="CloudFlare.__cfjs_block_10886f9ad87_readystatechange()" type="text/javascript" src="./Creating a Single Page Todo App with Node and Angular _ Scotch_files/rocket.js"></script>
+<link rel="alternate" type="application/rss+xml" title="Scotch ♥ Developers bringing fire to the people." href="https://scotch.io/feed">
+ 
+<link rel="shortcut icon" sizes="16x16 24x24 32x32 48x48 64x64 96x96" href="https://scotch.io/favicon.ico">
+<link rel="apple-touch-icon" sizes="57x57" href="https://scotch.io/wp-content/themes/scotchpress/img/favicons/favicon-57.png">
+<link rel="apple-touch-icon-precomposed" sizes="57x57" href="https://scotch.io/wp-content/themes/scotchpress/img/favicons/favicon-57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="https://scotch.io/wp-content/themes/scotchpress/img/favicons/favicon-60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="https://scotch.io/wp-content/themes/scotchpress/img/favicons/favicon-72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="https://scotch.io/wp-content/themes/scotchpress/img/favicons/favicon-76.png">
+<link rel="apple-touch-icon" sizes="96x96" href="https://scotch.io/wp-content/themes/scotchpress/img/favicons/favicon-96.png">
+<link rel="apple-touch-icon" sizes="114x114" href="https://scotch.io/wp-content/themes/scotchpress/img/favicons/favicon-114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="https://scotch.io/wp-content/themes/scotchpress/img/favicons/favicon-120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="https://scotch.io/wp-content/themes/scotchpress/img/favicons/favicon-144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="https://scotch.io/wp-content/themes/scotchpress/img/favicons/favicon-152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://scotch.io/wp-content/themes/scotchpress/img/favicons/favicon-180.png">
+<link rel="apple-touch-icon" sizes="192x192" href="https://scotch.io/wp-content/themes/scotchpress/img/favicons/favicon-192.png">
+<link rel="apple-touch-icon" sizes="194x194" href="https://scotch.io/wp-content/themes/scotchpress/img/favicons/favicon-194.png">
+<link rel="apple-touch-icon" sizes="228x228" href="https://scotch.io/wp-content/themes/scotchpress/img/favicons/favicon-228.png">
+<meta name="application-name" content="Scotch">
+<meta name="msapplication-TileImage" content="/wp-content/themes/scotchpress/img/favicons/favicon-144.png">
+<meta name="msapplication-TileColor" content="#ffffff">
+ 
+ 
+<meta name="author" content="chris">
+<meta name="description" content="Updated April 12, 2016: Updating dependenciesToday we will be creating a very simple Todo application using the MEAN (Mongo, Express, Angular, Node) stack. We...">
+<link rel="canonical" href="https://scotch.io/tutorials/creating-a-single-page-todo-app-with-node-and-angular">
+ 
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@scotch_io">
+<meta name="twitter:creator" content="sevilayha">
+<meta name="twitter:title" content="Creating a Single Page Todo App with Node and Angular">
+<meta name="twitter:url" content="https://scotch.io/tutorials/creating-a-single-page-todo-app-with-node-and-angular">
+<meta name="twitter:description" content="Updated April 12, 2016: Updating dependenciesToday we will be creating a very simple Todo application using the MEAN (Mongo, Express, Angular, Node) stack. We...">
+<meta name="twitter:image:src" content="https://scotch.io/wp-content/uploads/2013/11/node-angular-todo.jpg">
+ 
+<meta property="fb:admins" content="579622216,709634581">
+<meta property="fb:app_id" content="1389892087910588">
+<meta property="og:url" content="https://scotch.io/tutorials/creating-a-single-page-todo-app-with-node-and-angular">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Creating a Single Page Todo App with Node and Angular">
+<meta property="og:image" content="https://scotch.io/wp-content/uploads/2013/11/node-angular-todo.jpg">
+<meta property="og:description" content="Updated April 12, 2016: Updating dependenciesToday we will be creating a very simple Todo application using the MEAN (Mongo, Express, Angular, Node) stack. We...">
+<meta property="og:site_name" content="Scotch">
+<meta property="article:author" content="sevilayha">
+<meta property="article:publisher" content="https://www.facebook.com/scotchdevelopment">
+ 
+<meta itemprop="name" content="Creating a Single Page Todo App with Node and Angular">
+<meta itemprop="description" content="Updated April 12, 2016: Updating dependencies Today we will be creating a very simple Todo application using the MEAN (Mongo, Express, Angular, Node) stack. We will be creating: Single page application to create and finish todos Storing todos in a MongoDB using Mongoose Using the Express framework Creating a RESTful Node API Using Angular for […]">
+<meta itemprop="image" content="https://scotch.io/wp-content/uploads/2013/11/node-angular-todo.jpg">
+ 
+<script src="./Creating a Single Page Todo App with Node and Angular _ Scotch_files/hto5pnv.js"></script>
+<style type="text/css">.tk-lato{font-family:"lato",sans-serif;}.tk-source-code-pro{font-family:"source-code-pro",sans-serif;}.tk-acumin-pro{font-family:"acumin-pro",sans-serif;}</style><link rel="stylesheet" href="./Creating a Single Page Todo App with Node and Angular _ Scotch_files/l" media="all"><script>try{Typekit.load({ async: false });}catch(e){}</script>
+<link rel="stylesheet" href="./Creating a Single Page Todo App with Node and Angular _ Scotch_files/style.css">
+ 
+<script>var disqus_shortname = 'scotchwebdevelopment';</script>
+<script src="./Creating a Single Page Todo App with Node and Angular _ Scotch_files/count-data.js"></script><script src="./Creating a Single Page Todo App with Node and Angular _ Scotch_files/embed.js" data-timestamp="1467911691615"></script><script async="" src="./Creating a Single Page Todo App with Node and Angular _ Scotch_files/hotjar-201487.js"></script><script src="./Creating a Single Page Todo App with Node and Angular _ Scotch_files/modules-ff53d42a4d7f100201c6e78983209c2f.js"></script><script type="text/javascript" id="_bsap_js_8321ee0e3825ae084dc5408db80d21db" data-rocketsrc="//s3.buysellads.com/r/s_8321ee0e3825ae084dc5408db80d21db.js?v=1467910800000" data-rocketoptimized="true" async="async"></script><script type="text/javascript" data-rocketsrc="https://stats.buysellads.com/country.php" data-rocketoptimized="true"></script><script type="text/javascript" data-rocketsrc="https://stats.buysellads.com/country.php" data-rocketoptimized="true"></script><script type="text/javascript" data-rocketsrc="//s3.buysellads.com/ac/pro.js" data-rocketoptimized="true" id="_bsap_premium_pro"></script><script type="text/javascript" id="_bsaPRO_js" data-rocketsrc="//srv.buysellads.com/ads/get/ids/CAAIP2T;CA7D52E/?r=1467910800000" data-rocketoptimized="true" async="async"></script></head>
+<body class="single single-post postid-470 single-format-standard">
+<noscript>&lt;iframe src="//www.googletagmanager.com/ns.html?id=GTM-WZL83C" height="0" width="0" style="display:none;visibility:hidden"&gt;&lt;/iframe&gt;</noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-WZL83C');</script>
+<div class="site-wrap">
+<div class="site-canvas">
+<div class="site-side">
+<div class="scotch-logos">
+<a href="https://scotch.io/">
+<img src="./Creating a Single Page Todo App with Node and Angular _ Scotch_files/logo-large.png" class="img-responsive" title="" style="">
+<h1>scotch.io</h1>
+<p>code neat and clean</p>
+</a>
+</div>
+<nav class="side-nav">
+<ul class="list-unstyled nav-text">
+<li class="divider">Learn</li>
+<li><a href="https://scotch.io/tutorials" class="tutorials">
+<span class="iconic iconic-terminal"></span>
+Tutorials
+</a></li>
+<li><a href="https://scotch.io/bar-talk">
+<span class="iconic iconic-laptop"></span>
+Bar Talk
+</a></li>
+<li><a href="https://pub.scotch.io/">
+<span class="iconic iconic-connections"></span>
+Community
+</a></li>
+<li><a href="https://school.scotch.io/" class="school-link">
+<span class="iconic iconic-media-play-circle"></span>
+Scotch School
+</a></li>
+<li class="divider">Our Stuff</li>
+<li><a href="https://scotch.io/about">About</a></li>
+<li><a id="shop-link" href="http://shop.scotch.io/">Shop</a></li>
+<li><a id="slack-link" href="http://slack.scotch.io/">Join Us On Slack</a></li>
+<li><a id="digital-link" href="http://digital.scotch.io/">Hire Us</a></li>
+</ul>
+</nav>
+</div>
+<header class="site-header">
+<div class="banner">
+<div class="family-dropdown hidden-lg">
+<a href="https://scotch.io/" class="brand magazine current">
+<span class="logo-img"></span>
+<span class="text">
+<span class="logo-img-text"></span>
+</span>
+</a>
+<a href="https://scotch.io/tutorials/creating-a-single-page-todo-app-with-node-and-angular#" class="toggle-family">
+<span class="left"></span>
+<span class="right"></span>
+</a>
+<div class="siblings">
+<a href="https://pub.scotch.io/" class="brand the-pub">
+<span class="logo-img"></span>
+<span class="text">
+<span class="logo-img-text"></span>
+</span>
+</a>
+<a href="https://school.scotch.io/" class="brand school">
+<span class="logo-img"></span>
+<span class="text">
+<span class="logo-img-text"></span>
+</span>
+</a>
+</div>
+</div>
+<nav class="main-nav hidden-lg">
+<ul>
+<li>
+<a href="https://scotch.io/tutorials" class="tutorials">
+<span class="iconic iconic-code"></span>
+Tutorials
+</a>
+</li>
+<li>
+<a href="https://scotch.io/bar-talk">
+<span class="iconic iconic-pencil"></span>
+Bar Talk
+</a>
+</li>
+<li class="visible-lg">
+<a href="https://pub.scotch.io/">
+<span class="iconic iconic-people"></span>
+Community Posts
+</a>
+ 
+</li><li class="visible-lg">
+<a href="https://school.scotch.io/">
+<span class="iconic iconic-monitor"></span>
+Scotch School
+</a>
+</li>
+</ul>
+</nav>
+</div>
+<nav class="fancy-grid-links tutorial-links">
+<ul>
+<li>
+<a href="https://scotch.io/tag/vue-js" class="vue">
+<div class="fancy-logo"></div>
+<span>Vue.js</span>
+</a>
+</li>
+<li>
+<a href="https://scotch.io/tag/react" class="react">
+<div class="fancy-logo"></div>
+<span>React</span>
+</a>
+</li>
+<li>
+<a href="https://scotch.io/tag/angular-js" class="angular">
+<div class="fancy-logo"></div>
+<span>Angular</span>
+</a>
+</li>
+<li>
+<a href="https://scotch.io/tag/node-js" class="node">
+<div class="fancy-logo"></div>
+<span>Node</span>
+</a>
+</li>
+<li>
+<a href="https://scotch.io/tag/laravel" class="laravel">
+<div class="fancy-logo"></div>
+<span>Laravel</span>
+</a>
+</li>
+<li>
+<a href="https://scotch.io/tag/mean" class="mean">
+<div class="fancy-logo"></div>
+<span>MEAN</span>
+</a>
+</li>
+<li>
+<a href="https://scotch.io/tag/css" class="css">
+<div class="fancy-logo"></div>
+<span>CSS</span>
+</a>
+</li>
+<li>
+<a href="https://scotch.io/tag/bootstrap" class="bootstrap">
+<div class="fancy-logo"></div>
+<span>Bootstrap</span>
+</a>
+</li>
+<li>
+<a href="https://scotch.io/tag/sublime-text" class="sublime-text">
+<div class="fancy-logo"></div>
+<span>Sublime Text</span>
+</a>
+</li>
+<li>
+<a href="https://scotch.io/tag/gulp,bower,docker,elixir,git,grunt,vagrant" class="dev-tools">
+<div class="fancy-logo"></div>
+<span>Dev Tools</span>
+</a>
+</li>
+<li>
+<a href="https://scotch.io/tag/foundation" class="foundation">
+<div class="fancy-logo"></div>
+<span>Foundation</span>
+</a>
+</li>
+<li>
+<a href="https://scotch.io/tag/wordpress" class="wordpress">
+<div class="fancy-logo"></div>
+<span>WordPress</span>
+</a>
+</li>
+<li>
+<a href="https://scotch.io/tag/less" class="less">
+<div class="fancy-logo"></div>
+<span>LESS</span>
+</a>
+</li>
+<li>
+<a href="https://scotch.io/tag/sass" class="sass">
+<div class="fancy-logo"></div>
+<span>Sass</span>
+</a>
+</li>
+<li>
+<a href="https://scotch.io/tag/javascript" class="javascript">
+<div class="fancy-logo"></div>
+<span>JavaScript</span>
+</a>
+</li>
+</ul>
+</nav>
+</header>
+<div class="super-search">
+<a href="https://scotch.io/tutorials/creating-a-single-page-todo-app-with-node-and-angular#" class="toggle-super-search">
+<span class="iconic iconic iconic-x-thin"></span>
+</a>
+<form id="search-form" role="search" action="https://search.scotch.io/" method="GET">
+<div class="search-icon">
+<span class="iconic iconic-magnifying-glass"></span>
+</div>
+<input type="search" id="search-input" name="query" placeholder="Search Scotch for Cool Stuff" autocomplete="off">
+<div class="wrap">
+<button type="submit">
+<span class="iconic iconic-magnifying-glass"></span>
+</button>
+</div>
+</form>
+<div class="quick-links">
+<div class="container-fluid">
+<div class="row">
+<div class="col-sm-4 group">
+<div class="button-list">
+<h4 class="hidden"><span class="iconic iconic-heart"></span> From Scotch.io</h4>
+<ul id="primary-search-list">
+</ul>
+</div>
+</div>
+<div class="col-sm-4 group">
+<div class="button-list">
+<h4 class="hidden"><span class="iconic iconic-pencil"></span> From The Pub</h4>
+<ul id="secondary-search-list">
+</ul>
+</div>
+</div>
+<div class="col-sm-4 group">
+<div class="button-list">
+<h4 class="hidden"><span class="iconic iconic-fire"></span> What's Hot</h4>
+<ul id="tertiary-search-list">
+</ul>
+</div>
+</div>
+</div>
+</div>
+<ul id="search-item-placeholder" class="hidden">
+<li>
+<a href="https://scotch.io/tutorials/creating-a-single-page-todo-app-with-node-and-angular#" class="squared has-image">
+<span class="img"></span>
+<span class="spoofer">Getting Started with Vue.js</span>
+<span class="visible">Getting Started with Vue.js</span>
+</a>
+</li>
+</ul>
+</div>
+</div>
+<nav class="misc-nav">
+<ul class="list-inline">
+<li class="hidden-xs hidden-sm login-link"><a href="https://scotch.io/tutorials/creating-a-single-page-todo-app-with-node-and-angular#login-modal" class="open-login-popup" data-effect="mfp-zoom-in">Login / Sign Up</a></li>
+<li class="hidden-xs hidden-sm write-link"><a href="https://pub.scotch.io/" class="visible-lg">Write a Post</a></li>
+<li>
+<a href="https://scotch.io/tutorials/creating-a-single-page-todo-app-with-node-and-angular#" class="toggle-misc-nav">
+<span class="text">More</span>
+<span class="icon iconic iconic-grid-two-up"></span>
+</a>
+</li>
+</ul>
+</nav>
+<main>
+<div class="single-top-scotcherisment">
+<ins class="adsbygoogle" style="display:inline-block;width:970px;height:90px" data-ad-client="ca-pub-4625466825098355" data-ad-slot="2772961029" data-adsbygoogle-status="done"><!--No ad requested because of display:none on the adsbygoogle tag--></ins>
+<script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+</div>
+<article class="" style="min-height: 19889px;">
+<div class="container">
+<div class="single-wrap">
+<div class="inner-guts guts no-top-margin ">
+<div class="featured-image-guts">
+<img src="./Creating a Single Page Todo App with Node and Angular _ Scotch_files/node-angular-todo.jpg" title="">
+</div>
+<div class="row">
+<div class="col-md-12">
+<aside class="top">
+<div class="link-buttons">
+<a href="http://node-todo.scotch.io/" target="_blank" class="boring"><span class="iconic iconic-beaker"></span> Demo</a>
+<a href="https://github.com/scotch-io/node-todo/tree/tut1-starter" target="_blank" class="alternative"><span class="iconic iconic-social-github"></span> Code</a>
+</div>
+<div class="tags">
+<a href="https://scotch.io/tag/angular-js">angularJS</a>
+<a href="https://scotch.io/tag/mean">MEAN</a>
+<a href="https://scotch.io/tag/node-js">node.js</a>
+</div>
+</aside>
+<header>
+<h1 itemprop="headline">Creating a Single Page Todo App with Node and Angular</h1>
+</header>
+<aside class="bottom">
+<div class="author">
+<a href="https://scotch.io/author/chris" class="profile-spot no-border" title="" style="">
+<span class="img" style="background-image: url(&#39;//gravatar.com/avatar/8a8bf3a2c952984defbd6bb48304b38e?s=200&amp;d=https%3A%2F%2Fscotch.io%2Fwp-content%2Fthemes%2Fscotchpress%2Fimg%2Flogo-large.png&#39;);"></span>
+</a>
+</div>
+<div class="meta-info">
+<a href="https://scotch.io/author/chris" itemprop="author" itemscope="" itemtype="https://schema.org/Person">
+<span itemprop="name">Chris Sevilleja</span>
+</a>
+<span class="separator"></span>
+<span>Nov 07, 2013</span>
+<span class="separator"></span>
+<a href="https://scotch.io/tutorials">Tutorials</a>
+<span class="separator"></span>
+<a href="https://scotch.io/tutorials/creating-a-single-page-todo-app-with-node-and-angular#disqus_thread">211 Comments</a>
+</div>
+<div class="hotness hint--top" data-segment="creating-a-single-page-todo-app-with-node-and-angular" data-hint="Approximate Love">
+<span class="count" id="update-counter">481,379</span>
+<span class="iconic iconic-fire"></span>
+</div>
+</aside>
+<div class="scotcherisment">
+<div id="bsap_1300582" class="bsap bsap_1300582" data-serve="CAAIP2T">
+<style type="text/css">
+div.bsap_1300582{width:100%;display:block;}div.bsap_1300582 a{width:728px;}div.bsap_1300582 a img{padding:0;}div.bsap_1300582 a em{font-style:normal;}div.bsap_1300582 a{display:block;font-size:11px;color:#888;font-family:verdana,sans-serif;margin:0;text-align:center;text-decoration:none;overflow:hidden;float:left;}
+div.bsap_1300582 img{border:0;clear:right;}
+div.bsap_1300582 a.adhere{display:block;color:#666;font-weight:bold;font-size:12px;border:1px solid #ccc;background:#e7e7e7;text-align:center;margin-top:8px !important;}
+div.bsap_1300582 a.adhere:hover{border:1px solid #999;background:#ddd;color:#333;}
+div.bsap_1300582 iframe{display:block;font-size:11px;color:#888;font-family:verdana,sans-serif;margin:0;text-align:center;text-decoration:none;overflow:hidden;float:left;}div.bsap_1300582 a{line-height:100%;}div.bsap_1300582 a.adhere{width:728px;height:90px;line-height:720%;}html>body div.bsap_1300582 a.adhere{width:726px;height:88px;}div.bsap_1300582 img.s{height:0;width:0;}div.bsap_1300582{line-height:9px;}div.bsap_1300582 .bsap_adhere2,div.bsap_1300582 iframe{float:left;}div.bsap_1300582 .bsap_adhere2 a{height:90px;width:20px;background:url(http:\/\/s3.buysellads.com\/ac\/ah20x90_1.gif) no-repeat 0 0;text-indent:-9999px;}
+</style>
+<iframe width="728" height="90" id="ad_6862443_frame" src="./Creating a Single Page Todo App with Node and Angular _ Scotch_files/raw_0e5c674eee9431e4dd39be4516baf934.html" frameborder="0" class="bsap_adframe" scrolling="no"></iframe>
+
+<script type="text/javascript" id="auto_1" class="ignoreme"> if (typeof(_bsap_serving_callback) !== 'undefined') _bsap_serving_callback(55979, 'CAAIP2T', ''); </script>
+
+<div class="bsap_adhere">
+
+<a href="http://www.buysellads.com/buy/detail/219041/zone/1300582?utm_source=site_219041&amp;utm_medium=website&amp;utm_campaign=imagetext&amp;utm_content=zone_1300582" class="">Advertise Here</a>
+
+</div>
+
+
+<script type="text/javascript" id="auto_2" class="ignoreme"> if (typeof(BSACallback) !== 'undefined') BSACallback(); </script></div>
+</div>
+<div class="content">
+<p><em>Updated April 12, 2016: Updating dependencies</em></p>
+<p>Today we will be creating a very simple Todo application using the MEAN (Mongo, Express, Angular, Node) stack. We will be creating:</p>
+<ul>
+<li>Single page application to create and finish todos</li>
+<li>Storing todos in a MongoDB using Mongoose</li>
+<li>Using the Express framework</li>
+<li>Creating a RESTful Node API</li>
+<li>Using Angular for the frontend and to access the API</li>
+</ul>
+<div class="alert alert-info">
+<i class="fa fa-info-circle"></i> This article has been updated for <a href="https://scotch.io/bar-talk/expressjs-4-0-new-features-and-upgrading-from-3-0" class="alert-link">ExpressJS 4.0</a>.
+</div>
+<p>While the application is simple and <strong>beginner to intermediate</strong> level in its own right, the concepts here can apply to much more advanced apps. The biggest things we should focus on is using Node as an API and Angular as the frontend. Making them work together can be a bit confusing so this tutorial should help alleviate some confusion. Buckle those seatbelts; this could be a long one.</p>
+<h3>What We’ll Be Building</h3>
+<div class="text-center">
+<a href="./Creating a Single Page Todo App with Node and Angular _ Scotch_files/todoaholic.png"><img src="./Creating a Single Page Todo App with Node and Angular _ Scotch_files/todoaholic.png" alt="todoaholic" width="1362" height="566" class="alignnone size-full wp-image-483 img-responsive img-thumbnail" title="" style=""></a>
+</div>
+<h2 id="base-setup"><a href="https://scotch.io/tutorials/creating-a-single-page-todo-app-with-node-and-angular#base-setup"><span class="icon">#</span> Base Setup</a></h2>
+<h3>File Structure</h3>
+<p>We are going to keep the file structure very simple and put most of the code for our Node application into the <code>server.js</code> file. In larger applications, this should be broken down further to separate duties. <a href="http://mean.io/" target="_blank">Mean.io</a> is a good boilerplate to see best practices and how to separate file structure. Let’s go ahead and create our simpler file structure and edit the files as we go along.</p>
+<pre data-title="markup" class=" language-markup"><code class=" language-markup">
+    - public            <span class="token comment" spellcheck="true">&lt;!-- holds all our files for our frontend angular application --&gt;</span>
+    ----- core.js       <span class="token comment" spellcheck="true">&lt;!-- all angular code for our app --&gt;</span>
+    ----- index.html    <span class="token comment" spellcheck="true">&lt;!-- main view --&gt;</span>
+    - package.json      <span class="token comment" spellcheck="true">&lt;!-- npm configuration to install dependencies/modules --&gt;</span>
+    - server.js         <span class="token comment" spellcheck="true">&lt;!-- Node configuration --&gt;</span>
+</code>
+</pre>
+<h3>Installing Modules</h3>
+<p>In Node, the <code>package.json</code> file holds the configuration for our app. Node’s package manager (npm) will use this to install any dependencies or modules that we are going to use. In our case, we will be using <a href="http://expressjs.com/" target="_blank">Express</a> (popular Node framework) and <a href="http://mongoosejs.com/" target="_blank">Mongoose</a> (object modeling for MongoDB).</p>
+<pre data-title="javascript" class=" language-javascript"><code class=" language-javascript">
+<span class="token punctuation">{</span>
+  <span class="token string">"name"</span>         <span class="token punctuation">:</span> <span class="token string">"node-todo"</span><span class="token punctuation">,</span>
+  <span class="token string">"version"</span>      <span class="token punctuation">:</span> <span class="token string">"0.0.0"</span><span class="token punctuation">,</span>
+  <span class="token string">"description"</span>  <span class="token punctuation">:</span> <span class="token string">"Simple todo application."</span><span class="token punctuation">,</span>
+  <span class="token string">"main"</span>         <span class="token punctuation">:</span> <span class="token string">"server.js"</span><span class="token punctuation">,</span>
+  <span class="token string">"author"</span>       <span class="token punctuation">:</span> <span class="token string">"Scotch"</span><span class="token punctuation">,</span>
+  <span class="token string">"dependencies"</span> <span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    <span class="token string">"body-parser"</span>    <span class="token punctuation">:</span> <span class="token string">"^1.4.3"</span><span class="token punctuation">,</span>
+    <span class="token string">"express"</span>        <span class="token punctuation">:</span> <span class="token string">"^4.13.4"</span><span class="token punctuation">,</span>
+    <span class="token string">"method-override"</span><span class="token punctuation">:</span> <span class="token string">"^2.1.3"</span><span class="token punctuation">,</span>
+    <span class="token string">"mongoose"</span>       <span class="token punctuation">:</span> <span class="token string">"^4.4.12"</span><span class="token punctuation">,</span>
+    <span class="token string">"morgan"</span>         <span class="token punctuation">:</span> <span class="token string">"^1.1.1"</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code>
+</pre>
+<p>Now if we run <code>npm install</code>, npm will look at this file and install Express and Mongoose.</p>
+<div class="text-center">
+<a href="./Creating a Single Page Todo App with Node and Angular _ Scotch_files/npm-install.png"><img src="./Creating a Single Page Todo App with Node and Angular _ Scotch_files/npm-install.png" alt="npm-install" width="824" height="457" class="alignnone size-full wp-image-472 img-responsive img-thumbnail"></a>
+</div>
+<h3>Node Configuration</h3>
+<p>In our <code>package.json</code> file, we told it that our main file would be <code>server.js</code>. This is the main file for our Node app and where we will configure the entire application.</p>
+<p>This is the file where we will:</p>
+<ul>
+<li>Configure our application</li>
+<li>Connect to our database</li>
+<li>Create our Mongoose models</li>
+<li>Define routes for our RESTful API</li>
+<li>Define routes for our frontend Angular application</li>
+<li>Set the app to listen on a port so we can view it in our browser</li>
+</ul>
+<p>For now, we will just configure the app for Express, our MongoDB database, and listening on a port.</p>
+<pre data-title="javascript" class=" language-javascript"><code class=" language-javascript"><span class="token comment" spellcheck="true">// server.js</span>
+
+    <span class="token comment" spellcheck="true">// set up ========================</span>
+    <span class="token keyword">var</span> express  <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'express'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">var</span> app      <span class="token operator">=</span> <span class="token function">express</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>                               <span class="token comment" spellcheck="true">// create our app w/ express</span>
+    <span class="token keyword">var</span> mongoose <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'mongoose'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>                     <span class="token comment" spellcheck="true">// mongoose for mongodb</span>
+    <span class="token keyword">var</span> morgan <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'morgan'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>             <span class="token comment" spellcheck="true">// log requests to the console (express4)</span>
+    <span class="token keyword">var</span> bodyParser <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'body-parser'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">// pull information from HTML POST (express4)</span>
+    <span class="token keyword">var</span> methodOverride <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'method-override'</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// simulate DELETE and PUT (express4)</span>
+
+    <span class="token comment" spellcheck="true">// configuration =================</span>
+
+    mongoose<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span><span class="token string">'mongodb://node:nodeuser@mongo.onmodulus.net:27017/uwO3mypu'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>     <span class="token comment" spellcheck="true">// connect to mongoDB database on modulus.io</span>
+
+    app<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span>express<span class="token punctuation">.</span><span class="token keyword">static</span><span class="token punctuation">(</span>__dirname <span class="token operator">+</span> <span class="token string">'/public'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>                 <span class="token comment" spellcheck="true">// set the static files location /public/img will be /img for users</span>
+    app<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span><span class="token function">morgan</span><span class="token punctuation">(</span><span class="token string">'dev'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>                                         <span class="token comment" spellcheck="true">// log every request to the console</span>
+    app<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span>bodyParser<span class="token punctuation">.</span><span class="token function">urlencoded</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token string">'extended'</span><span class="token punctuation">:</span><span class="token string">'true'</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>            <span class="token comment" spellcheck="true">// parse application/x-www-form-urlencoded</span>
+    app<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span>bodyParser<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>                                     <span class="token comment" spellcheck="true">// parse application/json</span>
+    app<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span>bodyParser<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">{</span> type<span class="token punctuation">:</span> <span class="token string">'application/vnd.api+json'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// parse application/vnd.api+json as json</span>
+    app<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span><span class="token function">methodOverride</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// listen (start app with node server.js) ======================================</span>
+    app<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token number">8080</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"App listening on port 8080"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+</code>
+</pre>
+<p>Just with that bit of code, we now have an HTTP server courtesy of Node. We have also created an app with Express and now have access to many benefits of it. In our <code>app.configure</code> section, we are using express modules to add more functionality to our application.</p>
+<h3>Database Setup</h3>
+<p>We will be using a remote database hosted on <a href="https://modulus.io/" target="_blank">Modulus.io</a>. They provide a great service and give you $15 upfront to use as you see fit. This is great for doing testing and creating databases on the fly.</p>
+<p>Modulus will provide the database URL you need and you can use <code>mongoose.connect</code> to connect to it. That’s it.</p>
+<h3>Start Your App!</h3>
+<p>Now that we have our <code>package.json</code> and <code>server.js</code> started up, we can start up our server and see what’s going on. Just go into your console and use the following command:</p>
+<p><code>node server.js</code> Now you have a server listening on port 8080. You can’t see anything in your browser at <strong>http://localhost:8080</strong> yet since we didn’t configure our application to output anything. But it’s a start!</p>
+<div class="alert alert-info">
+<i class="icon-bolt"></i> <strong>Automatically restart server when files change:</strong> By default, node will not monitor for file changes after your server has been started. This means you’d have to shut down and start the server every time you made a file change. This can be fixed with <strong>nodemon</strong>. To use: install nodemon globally <code>npm install -g nodemon</code>. Start your server with <code>nodemon server.js</code> now. Smooth sailing from there.
+</div>
+<h2 id="application-flow"><a href="https://scotch.io/tutorials/creating-a-single-page-todo-app-with-node-and-angular#application-flow"><span class="icon">#</span> Application Flow</a></h2>
+<p>Now a brief overview of how all our moving parts will work together. There are a lot of different ideas and technologies involved in this application that it is easy to get mixed up with them all. In our diagram below, we explain a bit of the separation of tasks and how the parts tie in together.</p>
+<div class="text-center">
+<a href="./Creating a Single Page Todo App with Node and Angular _ Scotch_files/mean.jpg"><img src="./Creating a Single Page Todo App with Node and Angular _ Scotch_files/mean.jpg" alt="mean" width="1200" height="500" class="alignnone size-full wp-image-477 img-responsive img-thumbnail" title="" style=""></a>
+</div>
+<p>Angular is on its own in the frontend. It accesses all the data it needs through the Node API. Node hits the database and returns JSON information to Angular based on the RESTful routing.</p>
+<p>This way, you can separate the frontend application from the actual API. If you want to extend the API, you can always build more routes and functions into it without affecting the frontend Angular application. This way you can eventually build different apps on different platforms since you just have to hit the API.</p>
+<h2 id="creating-our-node-api"><a href="https://scotch.io/tutorials/creating-a-single-page-todo-app-with-node-and-angular#creating-our-node-api"><span class="icon">#</span> Creating Our Node API</a></h2>
+<p>Before we get to the frontend application, we need to create our RESTful API. This will allow us to have an api that will <strong>get all todos</strong>, <strong>create a todo</strong>, and <strong>complete and delete a todo</strong>. It will return all this information in JSON format.</p>
+<h3>Todo Model</h3>
+<p>We must define our model for our Todos. We’ll keep this simple. After the <strong>configuration section</strong> and before the <strong>listen</strong> section, we’ll add our model.</p>
+<pre data-title="javascript" class=" language-javascript"><code class=" language-javascript">
+    <span class="token comment" spellcheck="true">// define model =================</span>
+    <span class="token keyword">var</span> Todo <span class="token operator">=</span> mongoose<span class="token punctuation">.</span><span class="token function">model</span><span class="token punctuation">(</span><span class="token string">'Todo'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+        text <span class="token punctuation">:</span> String
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code>
+</pre>
+<p>That is all we want. Just the text for the todo. MongoDB will automatically generate an <code>_id</code> for each todo that we create also.</p>
+<h3>RESTful API Routes</h3>
+<p>Let’s generate our Express routes to handle our API calls.</p>
+<pre data-title="javascript" class=" language-javascript"><code class=" language-javascript"><span class="token comment" spellcheck="true">// server.js</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+<span class="token comment" spellcheck="true">// routes ======================================================================</span>
+
+    <span class="token comment" spellcheck="true">// api ---------------------------------------------------------------------</span>
+    <span class="token comment" spellcheck="true">// get all todos</span>
+    app<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token string">'/api/todos'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span>req<span class="token punctuation">,</span> res<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+        <span class="token comment" spellcheck="true">// use mongoose to get all todos in the database</span>
+        Todo<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span>err<span class="token punctuation">,</span> todos<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+            <span class="token comment" spellcheck="true">// if there is an error retrieving, send the error. nothing after res.send(err) will execute</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span>
+                res<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span>
+
+            res<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span>todos<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// return all todos in JSON format</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// create todo and send back all todos after creation</span>
+    app<span class="token punctuation">.</span><span class="token function">post</span><span class="token punctuation">(</span><span class="token string">'/api/todos'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span>req<span class="token punctuation">,</span> res<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+        <span class="token comment" spellcheck="true">// create a todo, information comes from AJAX request from Angular</span>
+        Todo<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+            text <span class="token punctuation">:</span> req<span class="token punctuation">.</span>body<span class="token punctuation">.</span>text<span class="token punctuation">,</span>
+            done <span class="token punctuation">:</span> <span class="token boolean">false</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span>err<span class="token punctuation">,</span> todo<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span>
+                res<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment" spellcheck="true">// get and return all the todos after you create another</span>
+            Todo<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span>err<span class="token punctuation">,</span> todos<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span>
+                    res<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span>
+                res<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span>todos<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// delete a todo</span>
+    app<span class="token punctuation">.</span><span class="token keyword">delete</span><span class="token punctuation">(</span><span class="token string">'/api/todos/:todo_id'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span>req<span class="token punctuation">,</span> res<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Todo<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+            _id <span class="token punctuation">:</span> req<span class="token punctuation">.</span>params<span class="token punctuation">.</span>todo_id
+        <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span>err<span class="token punctuation">,</span> todo<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span>
+                res<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment" spellcheck="true">// get and return all the todos after you create another</span>
+            Todo<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span>err<span class="token punctuation">,</span> todos<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span>
+                    res<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span>
+                res<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span>todos<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+</code>
+</pre>
+<p>Based on these routes, we’ve built a table to explain how a frontend application should request data from the API.</p>
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<td>
+HTTP Verb
+</td>
+<td>
+URL
+</td>
+<td>
+Description
+</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+GET
+</td>
+<td>
+/api/todos
+</td>
+<td>
+Get all of the todos
+</td>
+</tr>
+<tr>
+<td>
+POST
+</td>
+<td>
+/api/todos
+</td>
+<td>
+Create a single todo
+</td>
+</tr>
+<tr>
+<td>
+DELETE
+</td>
+<td>
+/api/todos/:todo_id
+</td>
+<td>
+Delete a single todo
+</td>
+</tr>
+</tbody>
+</table>
+<p>Inside of each of our API routes, we use the Mongoose actions to help us interact with our database. We created our Model earlier with <code>var Todo = mongoose.model</code> and now we can use that to <strong>find</strong>, <strong>create</strong>, and <strong>remove</strong>. There are many more things you can do and I would suggest looking at the official <a href="http://mongoosejs.com/docs/guide.html" target="_blank">docs</a> to learn more.</p>
+<p>Our API is done! Rejoice! If you start up your application, you can interact with it at <code>localhost:8080/api/todos</code> to get all the todos. There won’t be anything currently since you haven’t added any.</p>
+<h2 id="frontend-application-with-angular"><a href="https://scotch.io/tutorials/creating-a-single-page-todo-app-with-node-and-angular#frontend-application-with-angular"><span class="icon">#</span> Frontend Application with Angular</a></h2>
+<p>We have <strong>created a Node application</strong>, <strong>configured our database</strong>, <strong>generated our API routes</strong>, and <strong>started a server</strong>. So much already done and still a little bit longer to go!</p>
+<p>The work that we’ve done so far can stand on its own as an application. It can be an API we use let applications and users connect with our content.</p>
+<p>We want to be the first to use our brand new API that we’ve just created. This is one of my favorite terms that I learned about last month: We will be <a href="http://en.wikipedia.org/wiki/Eating_your_own_dog_food" target="_blank">dogfooding</a>. We could treat this as we are our very first client to use our new API. We are going to keep this simple so we’ll have just our <code>index.html</code> and <code>core.js</code> to define our frontend.</p>
+<h3>Defining Frontend Route</h3>
+<p>We have already defined our API routes. Our application’s API is accessible from <code>/api/todos</code>, but what about our frontend? How do we display the index.html file at our home page?</p>
+<p>We will add one route to our <code>server.js</code> file for the frontend application. This is all we need to do since Angular will be making a single page application and handle the routing.</p>
+<p>After our API routes, and before the <code>app.listen</code>, add this route:</p>
+<pre data-title="javascript" class=" language-javascript"><code class=" language-javascript"><span class="token comment" spellcheck="true">// server.js</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    <span class="token comment" spellcheck="true">// application -------------------------------------------------------------</span>
+    app<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token string">'*'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span>req<span class="token punctuation">,</span> res<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        res<span class="token punctuation">.</span><span class="token function">sendfile</span><span class="token punctuation">(</span><span class="token string">'./public/index.html'</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// load the single view file (angular will handle the page changes on the front-end)</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+</code>
+</pre>
+<p>This will load our single index.html file when we hit <code>localhost:8080</code>.</p>
+<h3>Setting Up Angular <small>core.js</small></h3>
+<p>Let’s go through our Angular setup first. We have to <strong>create a module</strong>, <strong>create a controller</strong>, and <strong>define functions to handle todos</strong>. Then we can <strong>apply to view</strong>.</p>
+<pre data-title="javascript" class=" language-javascript"><code class=" language-javascript"><span class="token comment" spellcheck="true">// public/core.js</span>
+<span class="token keyword">var</span> scotchTodo <span class="token operator">=</span> angular<span class="token punctuation">.</span><span class="token function">module</span><span class="token punctuation">(</span><span class="token string">'scotchTodo'</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">function</span> <span class="token function">mainController</span><span class="token punctuation">(</span>$scope<span class="token punctuation">,</span> $http<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    $scope<span class="token punctuation">.</span>formData <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// when landing on the page, get all todos and show them</span>
+    $http<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token string">'/api/todos'</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">success</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            $scope<span class="token punctuation">.</span>todos <span class="token operator">=</span> data<span class="token punctuation">;</span>
+            console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Error: '</span> <span class="token operator">+</span> data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// when submitting the add form, send the text to the node API</span>
+    $scope<span class="token punctuation">.</span>createTodo <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        $http<span class="token punctuation">.</span><span class="token function">post</span><span class="token punctuation">(</span><span class="token string">'/api/todos'</span><span class="token punctuation">,</span> $scope<span class="token punctuation">.</span>formData<span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">success</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                $scope<span class="token punctuation">.</span>formData <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// clear the form so our user is ready to enter another</span>
+                $scope<span class="token punctuation">.</span>todos <span class="token operator">=</span> data<span class="token punctuation">;</span>
+                console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Error: '</span> <span class="token operator">+</span> data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// delete a todo after checking it</span>
+    $scope<span class="token punctuation">.</span>deleteTodo <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        $http<span class="token punctuation">.</span><span class="token keyword">delete</span><span class="token punctuation">(</span><span class="token string">'/api/todos/'</span> <span class="token operator">+</span> id<span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">success</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                $scope<span class="token punctuation">.</span>todos <span class="token operator">=</span> data<span class="token punctuation">;</span>
+                console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Error: '</span> <span class="token operator">+</span> data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">}</span>
+</code>
+</pre>
+<p>We create our Angular module (<code>scotchApp</code>) and controller (<code>mainController</code>).</p>
+<p>We also create our functions to <strong>get all todos</strong>, <strong>create a todo</strong>, and <strong>delete a todo</strong>. All these will be hitting the API we just created. On page load, we will <code>GET /api/todos</code> and bind the JSON we receive from the API to <code>$scope.todos</code>. We will then loop over these in our view to make our todos.</p>
+<p>We’ll follow a similar pattern for <strong>creating and deleting</strong>. Run our action, remake our todos list.</p>
+<h3>Frontend View <small>index.html</small></h3>
+<p>Here we will keep it simple. This is the HTML needed to interact with Angular. We will:</p>
+<ul>
+<li>Assign Angular module and controller</li>
+<li>Initialize the page by getting all todos</li>
+<li>Loop over the todos</li>
+<li>Have a form to create todos</li>
+<li>Delete todos when they are checked</li>
+</ul>
+<pre data-title="markup" class=" language-markup"><code class=" language-markup"><span class="token comment" spellcheck="true">&lt;!-- index.html --&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>!doctype</span> <span class="token attr-name">html</span><span class="token punctuation">&gt;</span></span>
+
+<span class="token comment" spellcheck="true">&lt;!-- ASSIGN OUR ANGULAR MODULE --&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">ng-app</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>scotchTodo<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">&gt;</span></span>
+    <span class="token comment" spellcheck="true">&lt;!-- META --&gt;</span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>utf-8<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>viewport<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>width<span class="token punctuation">=</span>device-width, initial-scale<span class="token punctuation">=</span>1<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token comment" spellcheck="true">&lt;!-- Optimize mobile viewport --&gt;</span>
+
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">&gt;</span></span>Node/Angular Todo App<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">&gt;</span></span>
+
+    <span class="token comment" spellcheck="true">&lt;!-- SCROLLS --&gt;</span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>stylesheet<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token comment" spellcheck="true">&lt;!-- load bootstrap --&gt;</span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span><span class="token punctuation">&gt;</span></span><span class="token style language-css">
+        <span class="token selector">html                    </span><span class="token punctuation">{</span> <span class="token property">overflow-y</span><span class="token punctuation">:</span>scroll<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+        <span class="token selector">body                    </span><span class="token punctuation">{</span> <span class="token property">padding-top</span><span class="token punctuation">:</span>50px<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+        <span class="token selector"><span class="token id">#todo-list</span>              </span><span class="token punctuation">{</span> <span class="token property">margin-bottom</span><span class="token punctuation">:</span>30px<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">&gt;</span></span>
+
+    <span class="token comment" spellcheck="true">&lt;!-- SPELLS --&gt;</span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token script language-javascript"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span><span class="token comment" spellcheck="true">&lt;!-- load jquery --&gt;</span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token script language-javascript"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span><span class="token comment" spellcheck="true">&lt;!-- load angular --&gt;</span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>core.js<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token script language-javascript"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">&gt;</span></span>
+<span class="token comment" spellcheck="true">&lt;!-- SET THE CONTROLLER AND GET ALL TODOS --&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span> <span class="token attr-name">ng-controller</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>mainController<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>container<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+
+        <span class="token comment" spellcheck="true">&lt;!-- HEADER AND TODO COUNT --&gt;</span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>jumbotron text-center<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span><span class="token punctuation">&gt;</span></span>I'm a Todo-aholic <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>label label-info<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>{{ todos.length }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+
+        <span class="token comment" spellcheck="true">&lt;!-- TODO LIST --&gt;</span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>todo-list<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>row<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>col-sm-4 col-sm-offset-4<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+
+                <span class="token comment" spellcheck="true">&lt;!-- LOOP OVER THE TODOS IN $scope.todos --&gt;</span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>checkbox<span class="token punctuation">"</span></span> <span class="token attr-name">ng-repeat</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>todo in todos<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+                    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>label</span><span class="token punctuation">&gt;</span></span>
+                        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>checkbox<span class="token punctuation">"</span></span> <span class="token attr-name">ng-click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>deleteTodo(todo._id)<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span> {{ todo.text }}
+                    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>label</span><span class="token punctuation">&gt;</span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+
+        <span class="token comment" spellcheck="true">&lt;!-- FORM TO CREATE TODOS --&gt;</span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>todo-form<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>row<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>col-sm-8 col-sm-offset-2 text-center<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>form</span><span class="token punctuation">&gt;</span></span>
+                    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>form-group<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+
+                        <span class="token comment" spellcheck="true">&lt;!-- BIND THIS VALUE TO formData.text IN ANGULAR --&gt;</span>
+                        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>text<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>form-control input-lg text-center<span class="token punctuation">"</span></span> <span class="token attr-name">placeholder</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>I want to buy a puppy that will love me forever<span class="token punctuation">"</span></span> <span class="token attr-name">ng-model</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>formData.text<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+                    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+
+                    <span class="token comment" spellcheck="true">&lt;!-- createToDo() WILL CREATE NEW TODOS --&gt;</span>
+                    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>submit<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>btn btn-primary btn-lg<span class="token punctuation">"</span></span> <span class="token attr-name">ng-click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>createTodo()<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>Add<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">&gt;</span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>form</span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">&gt;</span></span>
+</code>
+</pre>
+<p>Take a look at what we have.</p>
+<div class="text-center">
+<a href="./Creating a Single Page Todo App with Node and Angular _ Scotch_files/todoaholic.png"><img src="./Creating a Single Page Todo App with Node and Angular _ Scotch_files/todoaholic.png" alt="todoaholic" width="1362" height="566" class="alignnone size-full wp-image-483 img-responsive img-thumbnail"></a>
+</div>
+<h2 id="conclusion"><a href="https://scotch.io/tutorials/creating-a-single-page-todo-app-with-node-and-angular#conclusion"><span class="icon">#</span> Conclusion</a></h2>
+<p>Now we have a fully working application that will show, create, and delete todos all via API (that we built!). That was quite a day. We’ve done so much. Just an overview of what we’ve accomplished:</p>
+<ul>
+<li>RESTful Node API using Express</li>
+<li>MongoDB interaction using mongoose</li>
+<li>Angular AJAX $http calls</li>
+<li>Single page application w/ no refreshes</li>
+<li>Dogfooding (sorry, I really like that word)</li>
+</ul>
+<h3>Test the Application</h3>
+<p>Go ahead and download the code on <a href="https://github.com/scotch-io/node-todo" target="_blank">Github</a> and tweak it or test it. To get it all up and running:</p>
+<ol>
+<li>Make sure you have <a href="http://nodejs.org/" target="_blank">Node and npm</a> installed</li>
+<li>Clone the repo: <code>git clone git@github.com:scotch-io/node-todo</code></li>
+<li>Install the application: <code>npm install</code></li>
+<li>Start the server: <code>node server.js</code></li>
+<li>View in your browser at <code>http://localhost:8080</code></li>
+</ol>
+<p>I hope this was insightful on how to have lots of moving parts work together. In the future, we will look at separating our <code>server.js</code> file since that got a little crazy.</p>
+<h3>Further Reading If you are interested in more MEAN stack applications, we’ve written up a guide to get you started in building your own MEAN stack foundation.</h3>
+<p><a href="https://scotch.io/bar-talk/setting-up-a-mean-stack-single-page-application">Setting Up a MEAN Stack Single Page Application</a></p>
+<div class="alert alert-info">
+<strong>Edit #1:</strong> Removing ng-init
+</div>
+<div class="alert alert-success">
+This article is part of our <a href="https://scotch.io/series/node-and-angular-to-do-app" class="alert-link">Node and Angular To-Do App</a> series.
+<ol>
+<li>
+Creating a Single Page To-do App with Node and Angular
+</li>
+<li>
+<a href="https://scotch.io/tutorials/javascript/node-and-angular-to-do-app-application-organization-and-structure" class="alert-link">Node Application Organization and Structure</a>
+</li>
+<li>
+<a href="https://scotch.io/tutorials/javascript/node-and-angular-to-do-app-controllers-and-services" class="alert-link">Angular Modules: Controllers and Services</a>
+</li>
+</ol>
+</div>
+</div>
+<footer class="aside">
+<div class="link-buttons">
+<a href="http://node-todo.scotch.io/" target="_blank" class="boring"><span class="iconic iconic-beaker"></span> Demo</a>
+<a href="https://github.com/scotch-io/node-todo/tree/tut1-starter" target="_blank" class="alternative"><span class="iconic iconic-social-github"></span> Code</a>
+</div>
+<div class="tags">
+<a href="https://scotch.io/tag/angular-js">angularJS</a>
+<a href="https://scotch.io/tag/mean">MEAN</a>
+<a href="https://scotch.io/tag/node-js">node.js</a>
+</div>
+</footer>
+</div>
+</div>
+<div class="sidebar">
+<div class="not-fixed">
+<div class="block  ">
+<div id="bsap_1291897" class="bsap bsap_1291897" data-serve="CA7D52E">
+<style type="text/css">
+div.bsap_1291897{width:300px;display:block;}div.bsap_1291897 a{width:300px;}div.bsap_1291897 a img{padding:0;}div.bsap_1291897 a em{font-style:normal;}div.bsap_1291897 a{}
+div.bsap_1291897 img{border:0;clear:right;border-radius:5px;margin-bottom:20px !important;}
+div.bsap_1291897 a.adhere{color:#666;font-weight:bold;font-size:12px;text-align:center;width:100% !important;display:block !important;}
+div.bsap_1291897 a.adhere:hover{color:#333;}
+div.bsap_1291897 iframe{}div.bsap_1291897 a{line-height:100%;}div.bsap_1291897 a.adhere{width:300px;height:250px;line-height:2000%;}html>body div.bsap_1291897 a.adhere{width:298px;height:248px;}div.bsap_1291897 img.s{height:0;width:0;}div.bsap_1291897{line-height:9px;}div.bsap_1291897 .bsap_adhere a{height:19px !important;width:298px !important;font-size:10px;background:#f1f1f1;border:1px solid #e1e1e1;border-top:none;border-radius: 0 0 2px 2px;line-height:16px;}.bsap_backfillframe{border:0;}
+</style>
+<a href="https://srv.buysellads.com/ads/click/x/GTND423NCAAI4K77FTY4YKQWCYSILKJNFT7IPZ3JCESD55QECVSDL53KC6BDK277C6YDEK3EHJNCLSIZ" class="ad0 odd " title="GoJS is a fast and powerful JavaScript library for implementing interactive diagrams in web applications. " id="bsa_5858549" target="_blank" rel="nofollow">
+<img src="https://s3.buysellads.com/1291897/272691-1433948044.png" width="300" height="250" alt="" style="display: none !important;"></a><a href="https://srv.buysellads.com/ads/click/x/GTND423NCAAI4K77FTY4YKQWCYSIE5QMFT7ITZ3JCESD55QWCYADP2QKC6BDK277C6YDEK3EHJNCLSIZ" class="ad1  even" title="Trusted by Developers. Support for when you need it! Liquid Web Managed WordPress Hosting" id="bsa_6861710" target="_blank" rel="nofollow">
+<img src="https://s3.buysellads.com/1291897/6861710-1467381272.gif" width="300" height="250" alt="" style="display: none !important;"></a>
+
+<div class="bsap_adhere">
+
+<a href="http://www.buysellads.com/buy/detail/219041/zone/1291897?utm_source=site_219041&amp;utm_medium=website&amp;utm_campaign=imagetext&amp;utm_content=zone_1291897" class="">Advertise Here</a>
+
+</div>
+
+
+<script type="text/javascript" id="auto_3" class="ignoreme"> if (typeof(BSACallback) !== 'undefined') BSACallback(); </script></div>
+</div>
+<div class="block  ">
+<h2 class="title">Popular Scotchers</h2>
+<div class="button-list">
+<ul>
+<li>
+<a href="https://scotch.io/author/chris" class="round has-image" style="display: block; height: 72px;">
+<span class="img" style="background-image: url(&#39;/wp-content/uploads/2016/02/8a8bf3a2c952984defbd6bb48304b38e.jpeg&#39;);"></span>
+<span class="spoofer">Chris Sevilleja</span>
+<span class="visible">Chris Sevilleja</span>
+</a>
+</li>
+<li>
+<a href="https://scotch.io/author/nick" class="round has-image" style="display: block; height: 72px;">
+<span class="img" style="background-image: url(&#39;/wp-content/uploads/2016/02/5d0008252214234c609144ff3adf62cf.jpeg&#39;);"></span>
+<span class="spoofer">Nicholas Cerminara</span>
+<span class="visible">Nicholas Cerminara</span>
+</a>
+</li>
+<li>
+<a href="https://scotch.io/author/holly" class="round has-image" style="display: block; height: 72px;">
+<span class="img" style="background-image: url(&#39;/wp-content/uploads/2016/02/5e074956ee8ba1fea26e30d28c190495.jpeg&#39;);"></span>
+<span class="spoofer">Holly Lloyd</span>
+<span class="visible">Holly Lloyd</span>
+</a>
+</li>
+<li>
+<a href="https://scotch.io/author/kukicadnan" class="round has-image" style="display: block; height: 72px;">
+<span class="img" style="background-image: url(&#39;/wp-content/uploads/2016/02/99c4080f412ccf46b9b564db7f482907.jpeg&#39;);"></span>
+<span class="spoofer">Ado Kukic</span>
+<span class="visible">Ado Kukic</span>
+</a>
+</li>
+<li>
+<a href="https://scotch.io/author/ryan" class="round has-image" style="display: block; height: 72px;">
+<span class="img" style="background-image: url(&#39;/wp-content/uploads/2016/02/7f4ec37467f2f7db6fffc7b4d2cc8dc2-1.jpeg&#39;);"></span>
+<span class="spoofer">Ryan Chenkie</span>
+<span class="visible">Ryan Chenkie</span>
+</a>
+</li>
+<li>
+<a href="https://scotch.io/author/kenwheeler" class="round has-image" style="display: block; height: 72px;">
+<span class="img" style="background-image: url(&#39;/wp-content/uploads/2016/02/4751e2e9fe7b876958d38f86a718ca91.jpeg&#39;);"></span>
+<span class="spoofer">Ken Wheeler</span>
+<span class="visible">Ken Wheeler</span>
+</a>
+</li>
+<li>
+<a href="https://scotch.io/author/alex-sears" class="round has-image" style="display: block; height: 72px;">
+<span class="img" style="background-image: url(&#39;/wp-content/uploads/2016/02/6c0654e56c8c73ffee8f76fe03d18ccf.jpeg&#39;);"></span>
+<span class="spoofer">Alex Sears</span>
+<span class="visible">Alex Sears</span>
+</a>
+</li>
+<li>
+<a href="https://scotch.io/author/chris92" class="round has-image" style="display: block; height: 72px;">
+<span class="img" style="background-image: url(&#39;/wp-content/uploads/2016/02/ffeece649256f09f8d52ebc17a8cc5e3.jpeg&#39;);"></span>
+<span class="spoofer">Chris Nwamba</span>
+<span class="visible">Chris Nwamba</span>
+</a>
+</li>
+<li>
+<a href="http://pub.scotch.io/" class="round has-image" style="display: block; height: 72px;">
+<span class="img" style="background-image: url(&#39;/wp-content/uploads/2016/02/logo.png&#39;);"></span>
+<span class="spoofer">Become a Scotcher!</span>
+<span class="visible">Become a Scotcher!</span>
+</a>
+</li>
+</ul>
+</div>
+</div>
+<div class="block social ">
+<h2 class="title">Stalk Us</h2>
+<a href="https://twitter.com/scotch_io" target="_blank" class="icon-spot">
+<span class="icon">
+<span class="iconic iconic-social-twitter"></span> </span>
+</a>
+<a href="https://www.facebook.com/scotchdevelopment" target="_blank" class="icon-spot">
+<span class="icon">
+<span class="iconic iconic-social-facebook"></span> </span>
+</a>
+<a href="https://github.com/scotch-io" target="_blank" class="icon-spot">
+<span class="icon">
+<span class="iconic iconic-social-github"></span> </span>
+</a>
+<a href="https://feeds.feedblitz.com/scotch_io" target="_blank" class="icon-spot">
+<span class="icon">
+<span class="iconic iconic iconic-rss-alt"></span> </span>
+</a>
+</div>
+<div class="block last">
+<ins class="adsbygoogle" style="display: inline-block; width: 300px; height: 250px;" data-ad-client="ca-pub-4625466825098355" data-ad-slot="8619471422" data-adsbygoogle-status="done"><!--No ad requested because of display:none on the adsbygoogle tag--></ins>
+<script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+</div>
+<div class="fixed-sidebar sticky">
+<div class="block bunch-of-posts">
+<div class="card ">
+<a href="http://synd.co/29aPsKe" class="tile " target="_blank" style="display: block; height: 279px;">
+<span class="img" style="background-image: url(&#39;/wp-content/uploads/2016/07/cloudinary.png&#39;);"></span>
+<div class="text">
+<h3 class="h2">Perfect images Every Time</h3>
+</div>
+</a>
+<a href="http://synd.co/11VHVYP" class="type sponsorships">
+<span>Advertise Here</span>
+</a>
+</div> </div>
+<div class="block custom-form">
+<h2 class="title">
+<span>Subscribe &amp; get our FREE eBook</span>
+Build Your First Node.js App
+</h2>
+<img src="./Creating a Single Page Todo App with Node and Angular _ Scotch_files/first-node-app-small.png" alt="Free Node Book">
+ 
+<div id="mc_embed_signup">
+<form action="https://scotch.us3.list-manage.com/subscribe/post?u=1c412c864c03eadaf07ccd61e&amp;id=a818d504d4" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate="">
+<input type="hidden" name="LOCATION" id="LOCATION" value="sidebar_fixed">
+<div class="mc-field-group form-group">
+<input type="email" name="EMAIL" class="required email form-control" id="mce-EMAIL" placeholder="Email Address">
+</div>
+<div id="mce-responses" class="clear">
+<div class="response" id="mce-error-response" style="display:none"></div>
+<div class="response" id="mce-success-response" style="display:none"></div>
+</div>
+<div style="position: absolute; left: -5000px;"><input type="text" name="b_1c412c864c03eadaf07ccd61e_a818d504d4" value=""></div>
+<div class="clear text-center"><input type="submit" value="Get the Free Node Book" name="subscribe" id="mc-embedded-subscribe" class="button btn btn-primary btn-sm btn-block"></div>
+</form>
+</div>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="author-guts guts">
+<div class="row">
+<div class="col-sm-3">
+<a href="https://scotch.io/author/chris" class="profile-spot no-border">
+<span class="img" style="background-image: url(&#39;//gravatar.com/avatar/8a8bf3a2c952984defbd6bb48304b38e?s=200&amp;d=https%3A%2F%2Fscotch.io%2Fwp-content%2Fthemes%2Fscotchpress%2Fimg%2Flogo-large.png&#39;);"></span>
+<span class="text">My Scotch Posts</span>
+</a>
+</div>
+<div class="col-sm-9">
+<div class="meta">
+<h3>
+<a href="https://scotch.io/author/chris">
+Chris Sevilleja </a>
+</h3>
+<p></p><p>Co-founder of Scotch.io. Slapping the keyboard until something good happens.</p><p></p>
+<div class="links">
+<a href="https://thepub.io/@chris" target="_blank" class="icon-spot">
+<span class="icon">
+<span class="iconic iconic-heart"></span>
+</span>
+</a>
+<a href="https://twitter.com/sevilayha" target="_blank" class="icon-spot">
+<span class="icon">
+<span class="iconic iconic-social-twitter"></span>
+</span>
+</a>
+<a href="https://facebook.com/sevilayha" target="_blank" class="icon-spot">
+<span class="icon">
+<span class="iconic iconic-social-facebook"></span>
+</span>
+</a>
+<a href="https://github.com/sevilayha" target="_blank" class="icon-spot">
+<span class="icon">
+<span class="iconic iconic-social-github"></span>
+</span>
+</a>
+<a href="https://plus.google.com/+ChrisSevilleja-scotch" target="_blank" class="icon-spot">
+<span class="icon">
+<span class="iconic iconic-social-google-plus"></span>
+</span>
+</a>
+<a href="https://instagram.com/sevilayha" target="_blank" class="icon-spot">
+<span class="icon">
+<span class="iconic iconic-social-instagram"></span>
+</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div> <div class="bunch-of-posts next-guts guts">
+<div class="row title">
+<div class="col-md-12">
+<h4>Next Up</h4>
+</div>
+</div>
+<div class="row">
+<div class="col-md-6 col-a">
+<div class="card ">
+<a href="https://scotch.io/tutorials/node-and-angular-to-do-app-application-organization-and-structure" class="tile " style="display: block; height: 444px;">
+<span class="img" style="background-image: url(&#39;/wp-content/uploads/2013/11/node-angular-todo-application-structure.jpg&#39;);"></span>
+<div class="text">
+<h3 class="h2">Node and Angular To-Do App: Application Organization and Structure</h3>
+<p>Updated April 12, 2016: Updating dependenciesToday we will be creating a very simple Todo application using the MEAN (Mongo,...</p>
+</div>
+</a>
+<div class="tags">
+<a href="https://scotch.io/tag/angular-js">angularJS</a>
+<a href="https://scotch.io/tag/mean">MEAN</a>
+<a href="https://scotch.io/tag/node-js">node.js</a>
+</div>
+<a href="https://scotch.io/author/chris" class="profile-spot no-border">
+<span class="img" style="background-image: url(&#39;//gravatar.com/avatar/8a8bf3a2c952984defbd6bb48304b38e?s=200&amp;d=https%3A%2F%2Fscotch.io%2Fwp-content%2Fthemes%2Fscotchpress%2Fimg%2Flogo-large.png&#39;);"></span>
+<span class="text">Chris Sevilleja</span>
+</a>
+</div>
+</div>
+<div class="col-md-6 col-b">
+<div class="card ">
+<a href="https://scotch.io/tutorials/quick-tip-using-laravel-blade-with-angularjs" class="tile " style="display: block; height: 444px;">
+<div class="text">
+<h3 class="h2">Using Laravel Blade with AngularJS</h3>
+<p>Updated April 12, 2016: Updating dependenciesToday we will be creating a very simple Todo application using the MEAN (Mongo,...</p>
+</div>
+</a>
+<div class="tags">
+<a href="https://scotch.io/tag/angular-js">angularJS</a>
+<a href="https://scotch.io/tag/laravel">laravel</a>
+</div>
+<a href="https://scotch.io/author/chris" class="profile-spot no-border">
+<span class="img" style="background-image: url(&#39;//gravatar.com/avatar/8a8bf3a2c952984defbd6bb48304b38e?s=200&amp;d=https%3A%2F%2Fscotch.io%2Fwp-content%2Fthemes%2Fscotchpress%2Fimg%2Flogo-large.png&#39;);"></span>
+<span class="text">Chris Sevilleja</span>
+</a>
+</div> </div>
+</div>
+</div> <div class="comments-guts guts">
+<div class="row">
+<div class="col-md-12">
+<div id="disqus_thread"><iframe id="dsq-app2" name="dsq-app2" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" title="Disqus" width="100%" src="./Creating a Single Page Todo App with Node and Angular _ Scotch_files/saved_resource.html" style="width: 1px !important; min-width: 100% !important; border: none !important; overflow: hidden !important; height: 8766px !important;" horizontalscrolling="no" verticalscrolling="no"></iframe><iframe id="indicator-north" name="indicator-north" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" title="Disqus" style="width: 745px !important; border: none !important; overflow: hidden !important; top: 0px !important; min-width: 745px !important; max-width: 745px !important; position: fixed !important; z-index: 2147483646 !important; height: 29px !important; min-height: 29px !important; max-height: 29px !important; display: none !important;" src="./Creating a Single Page Todo App with Node and Angular _ Scotch_files/saved_resource(1).html"></iframe><iframe id="indicator-south" name="indicator-south" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" title="Disqus" style="width: 745px !important; border: none !important; overflow: hidden !important; bottom: 0px !important; min-width: 745px !important; max-width: 745px !important; position: fixed !important; z-index: 2147483646 !important; height: 29px !important; min-height: 29px !important; max-height: 29px !important; display: none !important;" src="./Creating a Single Page Todo App with Node and Angular _ Scotch_files/saved_resource(2).html"></iframe></div>
+</div>
+</div>
+</div> <div class="page-friend show" style="left: 401.5px;">
+<div class="nav-stuff stuff">
+<div class="custom-select">
+<label>Space Jump</label>
+<select><option value="base-setup">Base Setup</option><option value="application-flow">Application Flow</option><option value="creating-our-node-api">Creating Our Node API</option><option value="frontend-application-with-angular">Frontend Application with Angular</option><option value="conclusion">Conclusion</option></select>
+</div>
+</div>
+<div class="share-stuff stuff">
+<a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fscotch.io%2Ftutorials%2Fcreating-a-single-page-todo-app-with-node-and-angular&amp;text=Creating+a+Single+Page+Todo+App+with+Node+and+Angular&amp;via=scotch_io&amp;related=scotch_io" class="icon-spot twitter">
+<span class="icon" style="transform: rotate(2140deg);">
+<span class="iconic iconic-social-twitter"></span>
+</span>
+<span class="text">Chirp Chirp</span>
+</a>
+<a href="https://scotch.io/tutorials/creating-a-single-page-todo-app-with-node-and-angular#" class="icon-spot facebook" onclick="window.open(
+                &#39;https://www.facebook.com/sharer/sharer.php?u=&#39;+encodeURIComponent(&#39;https://scotch.io/tutorials/creating-a-single-page-todo-app-with-node-and-angular&#39;),
+                &#39;facebook-share-dialog&#39;,
+                &#39;width=626,height=436&#39;);
+            return false;">
+<span class="icon" style="transform: rotate(2140deg);">
+<span class="iconic iconic-social-facebook"></span>
+</span>
+<span class="text">Zuck It</span>
+</a>
+</div>
+<div class="link-stuff stuff">
+<a href="http://node-todo.scotch.io/" class="icon-spot boring" target="_blank">
+<span class="icon">
+<span class="iconic iconic-beaker"></span>
+</span>
+<span class="text">Demo</span>
+</a>
+<a href="https://github.com/scotch-io/node-todo/tree/tut1-starter" class="icon-spot alternative" target="_blank">
+<span class="icon">
+<span class="iconic iconic-social-github"></span>
+</span>
+<span class="text">Code</span>
+</a>
+</div>
+<div class="like-stuff stuff">
+<a href="https://scotch.io/tutorials/creating-a-single-page-todo-app-with-node-and-angular#login-modal" data-api-url="//pub.scotch.io/api/posts/470/like/wordpress" data-id="470" class="icon-spot like-it-love-it open-login-popup" target="_blank">
+<span class="icon">
+<span class="iconic iconic-heart"></span>
+</span>
+<span class="text">Like</span>
+</a>
+<a href="https://scotch.io/tutorials/creating-a-single-page-todo-app-with-node-and-angular#login-modal" data-api-url="//pub.scotch.io/api/posts/470/bookmark/wordpress" class="icon-spot book-it-to-the-moon open-login-popup" target="_blank">
+<span class="icon">
+<span class="iconic iconic-bookmark"></span>
+</span>
+<span class="text">Bookmark</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</article>
+</main>
+<footer class="site-footer">
+<div class="newsletter">
+<form class="is-for-newsletter">
+<span class="iconic iconic-envelope-closed"></span>
+<input type="email" placeholder="Subscribe to the Scotch Newsletter" required="">
+<button type="submit">More Scotch Please</button>
+</form>
+</div>
+<div class="bottom-stuff">
+<div class="container">
+<div class="row">
+<div class="col-md-4">
+<a href="https://scotch.io/" class="profile-spot">
+<span class="img"></span>
+</a>
+</div>
+<div class="col-md-8">
+<nav>
+<ul>
+<li>
+<a href="https://scotch.io/">Scotch.io</a>
+<ul>
+<li><a href="https://scotch.io/tutorials">Tutorials</a></li>
+<li><a href="https://scotch.io/bar-talk">Bar Talk</a></li>
+<li><a href="https://twitter.com/sevilayha" target="_blank">@sevilayha</a></li>
+<li><a href="https://twitter.com/whatnicktweets" target="_blank">@whatnicktweets</a></li>
+<li><a href="https://twitter.com/hollylawly" target="_blank">@hollylawly</a></li>
+</ul>
+</li>
+<li>
+<a href="https://pub.scotch.io/" target="_blank">The Pub</a>
+<ul>
+<li><a href="https://pub.scotch.io/register" target="_blank">Write a Post</a></li>
+<li><a href="https://pub.scotch.io/" target="_blank">Community Posts</a></li>
+</ul>
+</li>
+<li>
+<a href="https://digital.scotch.io/" target="_blank">Our Stuff</a>
+<ul>
+<li><a href="https://leanpub.com/mean-machine" target="_blank">MEAN Machine</a></li>
+<li><a href="https://spudpress.com/" target="_blank">SpudPress</a></li>
+<li><a href="https://box.scotch.io/" target="_blank">Scotch Box</a></li>
+<li><a href="https://panels.scotch.io/" target="_blank">Scotch Panels</a></li>
+</ul>
+</li>
+<li>
+<a href="https://scotch.io/about">About Us</a>
+<ul>
+<li><a href="https://school.scotch.io/" target="_blank">Scotch School</a></li>
+<li><a href="https://digital.scotch.io/" target="_blank">Scotch Digital</a></li>
+<li><a href="https://shop.scotch.io/" target="_blank">Scotch Store</a></li>
+<li><a href="https://scotch-slack.herokuapp.com/" target="_blank">Scotch Slack</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<div class="row social">
+<div class="col-md-12">
+<a href="https://twitter.com/scotch_io" target="_blank" class="icon-spot">
+<span class="icon">
+<span class="iconic iconic-social-twitter"></span>
+</span>
+</a>
+<a href="https://facebook.com/scotchdevelopment" target="_blank" class="icon-spot">
+<span class="icon">
+<span class="iconic iconic-social-facebook"></span>
+</span>
+</a>
+<a href="https://github.com/scotch-io" target="_blank" class="icon-spot">
+<span class="icon">
+<span class="iconic iconic-social-github"></span>
+</span>
+</a>
+<a href="https://feeds.feedblitz.com/scotch_io" target="_blank" class="icon-spot">
+<span class="icon">
+<span class="iconic iconic iconic-rss-alt"></span>
+</span>
+</a>
+<a href="https://pub.scotch.io/" target="_blank" class="icon-spot">
+<span class="icon">
+<span class="iconic iconic-pencil"></span>
+</span>
+</a>
+</div>
+</div>
+<div class="row misc">
+<div class="col-md-12">
+<p>SSBsb3ZlIHNjb3RjaC4gU2NvdGNoeSBzY290Y2ggc2NvdGNoLg==</p>
+<p>v40.13378133781337 / <a href="https://scotch.io/advertise">Advertise</a> / <a href="https://scotch.io/contact">Contact</a> / <a href="https://scotch.io/license">License</a></p>
+<p>© 2016 Scotch.io, LLC. All Rights Super Duper Reserved.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="spudpress">
+<p><strong>Pain free</strong> and <strong>100% static</strong> hosting by <a href="https://spudpress.com/" target="_blank">SpudPress</a> <span class="iconic iconic-heart"></span></p>
+</div>
+</footer>
+</div> 
+<div class="misc-links">
+<a href="https://pub.scotch.io/register" class="profile-spot">
+<span class="img"></span>
+<span class="text">Login / Register</span>
+</a><a href="http://pub.scotch.io/logout" class="text logout hidden">Logout</a>
+
+<hr>
+<div class="container-fluid logged-in-menu hidden">
+<div class="row" style="margin-bottom:20px">
+<div class="col-xs-6 col-sm-4 col-sm-offset-2">
+<a href="http://pub.scotch.io/my/home" class="icon-spot">
+<span class="icon">
+<span class="iconic iconic-heart"></span>
+</span>
+<span class="text">Likes</span>
+</a>
+</div>
+<div class="col-xs-6 col-sm-4">
+<a href="http://pub.scotch.io/my/home" class="icon-spot">
+<span class="icon">
+<span class="iconic iconic-bookmark"></span>
+</span>
+<span class="text">Bookmarks</span>
+</a>
+</div>
+</div>
+<div class="row">
+<div class="col-xs-6 col-sm-4">
+<a href="http://pub.scotch.io/my/posts" class="icon-spot">
+<span class="icon">
+<span class="iconic iconic-copywriting"></span>
+</span>
+<span class="text">My Posts</span>
+</a>
+</div>
+<div class="col-xs-6 col-sm-4">
+<a href="http://pub.scotch.io/my/earnings" class="icon-spot">
+<span class="icon">
+<span class="iconic iconic-dollar"></span>
+</span>
+<span class="text">Earnings</span>
+</a>
+</div>
+<div class="col-xs-6 col-sm-4">
+<a href="http://pub.scotch.io/my/profile" class="icon-spot">
+<span class="icon">
+<span class="iconic iconic-person-genderless"></span>
+</span>
+<span class="text">Profile</span>
+</a>
+</div>
+</div>
+<hr>
+</div>
+<div class="container-fluid">
+<h4>The Scotch.io Family</h4>
+<div class="row">
+<div class="col-sm-4 col-xs-4">
+<a href="https://scotch.io/" class="icon-spot">
+<span class="icon">
+<span class="iconic iconic-heart"></span>
+</span>
+<span class="text">Scotch.io</span>
+</a>
+</div>
+<div class="col-sm-4 col-xs-4">
+<a href="https://pub.scotch.io/" class="icon-spot">
+<span class="icon">
+<span class="iconic iconic-pencil"></span>
+</span>
+<span class="text">The Pub</span>
+</a>
+</div>
+<div class="col-sm-4 col-xs-4">
+<a href="https://school.scotch.io/" class="icon-spot">
+<span class="icon">
+<span class="iconic iconic iconic-monitor"></span>
+</span>
+<span class="text">School</span>
+</a>
+</div>
+</div>
+</div>
+<hr>
+<form class="is-for-newsletter">
+<input type="email" placeholder="kylo-ren@hoth-topic.com" required="">
+<button type="submit">Get Scotch in your inbox</button>
+</form>
+<hr>
+<div class="container-fluid">
+<div class="row">
+<div class="col-sm-3 col-xs-6">
+<a href="https://twitter.com/scotch_io" target="_blank" class="icon-spot">
+<span class="icon">
+<span class="iconic iconic-social-twitter"></span>
+</span>
+<span class="text">Twitter</span>
+</a>
+</div>
+<div class="col-sm-3 col-xs-6">
+<a href="https://facebook.com/scotchdevelopment" target="_blank" class="icon-spot">
+<span class="icon">
+<span class="iconic iconic-social-facebook"></span>
+</span>
+<span class="text">Facebook</span>
+</a>
+</div>
+<div class="col-sm-3 col-xs-6">
+<a href="https://github.com/scotch-io" target="_blank" class="icon-spot">
+<span class="icon">
+<span class="iconic iconic-social-github"></span>
+</span>
+<span class="text">GitHub</span>
+</a>
+</div>
+<div class="col-sm-3 col-xs-6">
+<a href="https://scotch.io/feed" target="_blank" class="icon-spot">
+<span class="icon">
+<span class="iconic iconic iconic-rss-alt"></span>
+</span>
+<span class="text">RSS</span>
+</a>
+</div>
+</div>
+</div>
+<hr>
+<div class="container-fluid projects">
+<div class="row">
+<div class="col-sm-4 col-xs-12">
+<a href="https://leanpub.com/mean-machine" target="_blank" class="profile-spot no-border">
+<span class="img" style="background-image: url(&#39;/wp-content/themes/scotchpress/img/spot-mean-machine.png&#39;);"></span>
+<span class="text">MEAN Machine</span>
+</a>
+</div>
+<div class="col-sm-4 col-xs-12">
+<a href="https://spudpress.com/" target="_blank" class="profile-spot no-border">
+<span class="img" style="background-image: url(&#39;/wp-content/themes/scotchpress/img/spot-spudpress.png&#39;);"></span>
+<span class="text">SpudPress</span>
+</a>
+</div>
+<div class="col-sm-4 col-xs-12">
+<a href="https://box.scotch.io/" target="_blank" class="profile-spot no-border">
+<span class="img" style="background-image: url(&#39;/wp-content/themes/scotchpress/img/spot-vagrant.png&#39;);"></span>
+<span class="text">Scotch Box</span>
+</a>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-4 col-xs-12">
+<a href="https://panels.scotch.io/" target="_blank" class="profile-spot no-border bottom">
+<span class="img" style="background-image: url(&#39;/wp-content/themes/scotchpress/img/spot-panels.png&#39;);"></span>
+<span class="text">Panels</span>
+</a>
+</div>
+<div class="col-sm-4 col-xs-12">
+<a href="https://digital.scotch.io/" target="_blank" class="profile-spot no-border bottom">
+<span class="img" style="background-image: url(&#39;/wp-content/themes/scotchpress/img/spot-digital.png&#39;);"></span>
+<span class="text">Digital</span>
+</a>
+</div>
+<div class="col-sm-4 col-xs-12">
+<a href="https://pub.scotch.io/" class="profile-spot no-border bottom">
+<span class="img" style="background-image: url(&#39;/wp-content/themes/scotchpress/img/logo-pub.png&#39;);"></span>
+<span class="text">The Pub</span>
+</a>
+</div>
+</div>
+</div>
+<hr>
+<div class="container-fluid">
+<div class="row">
+<div class="col-xs-4">
+<a href="https://scotch.io/advertise" class="icon-spot">
+<span class="icon">
+<span class="iconic iconic-dollar"></span>
+</span>
+<span class="text">Advertise</span>
+</a>
+</div>
+<div class="col-xs-4">
+<a href="https://scotch.io/contact" class="icon-spot">
+<span class="icon">
+<span class="iconic iconic-envelope-open"></span>
+</span>
+<span class="text">Contact</span>
+</a>
+</div>
+<div class="col-xs-4">
+<a href="https://scotch.io/write-for-us" target="_blank" class="icon-spot">
+<span class="icon">
+<span class="iconic iconic-pencil"></span>
+</span>
+<span class="text">Write for Us</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div id="login-modal" class="base-popup white-popup mfp-with-anim mfp-hide">
+<div class="auth-modal auth-modal-login">
+<div class="vertical-center">
+<div class="page-header text-center">
+<h3>Login</h3>
+<small>or <a href="https://scotch.io/tutorials/creating-a-single-page-todo-app-with-node-and-angular#" class="auth-show-signup">Sign Up</a></small>
+</div>
+<form id="login-form" class="login-form text-left" method="POST" action="https://pub.scotch.io/api/auth/login">
+<div class="form-group">
+<input type="email" class="form-control" name="email" placeholder="Email">
+</div>
+<div class="form-group">
+<input type="password" class="form-control" name="password" placeholder="******">
+</div>
+<label class="custom-checkbox active m-b">
+Remember Me
+<div class="field">
+<input type="checkbox" name="remember" value="1" checked="">
+</div>
+</label>
+<div class="form-group">
+<button type="submit" class="btn btn-success btn-lg make-big btn-block">Login</button>
+</div>
+</form>
+<p class="text-right extra-text-small">
+<a href="http://pub.scotch.io/password/reset">Forgot Your Password?</a>
+</p>
+</div>
+</div>
+ 
+<div class="auth-modal auth-modal-signup">
+<div class="page-header text-center">
+<h3>Sign Up</h3>
+<small>or <a href="https://scotch.io/tutorials/creating-a-single-page-todo-app-with-node-and-angular#" class="auth-show-login">Login</a></small>
+</div>
+<div class="form-group row text-center">
+<div class="col-xs-4">
+<span class="iconic iconic-heart iconic-sm"></span>
+<h5 class="text-muted">Like</h5>
+</div>
+<div class="col-xs-4">
+<span class="iconic iconic-bookmark iconic-sm"></span>
+<h5 class="text-muted">Bookmark</h5>
+</div>
+<div class="col-xs-4">
+<span class="iconic iconic-pencil iconic-sm"></span>
+<h5 class="text-muted">Write</h5>
+</div>
+</div>
+<form id="signup-form" method="POST" action="https://pub.scotch.io/api/auth/register" class="text-left">
+ 
+<div class="hidden">
+<input name="my_name" type="text" value="" id="my_name">
+</div>
+<div class="form-group scotch-unique-group unique-group">
+<input type="text" class="form-control unique-check" data-base="//pub.scotch.io" name="username" placeholder="Username">
+</div>
+<div class="form-group scotch-unique-group unique-group">
+<input type="email" class="form-control unique-check" data-base="//pub.scotch.io" name="email" placeholder="Email">
+</div>
+<div class="form-group">
+<input type="password" class="form-control" name="password" placeholder="Password">
+</div>
+<label class="custom-checkbox active m-b">
+Subscribe
+<div class="field">
+<input type="checkbox" name="newsletter" value="1" checked="">
+</div>
+</label>
+<div class="form-group">
+<button type="submit" class="btn btn-success btn-lg make-big btn-block">Join Scotch</button>
+</div>
+</form>
+</div>
+</div>
+</div> 
+ 
+<script type="text/javascript" src="./Creating a Single Page Todo App with Node and Angular _ Scotch_files/superpower.min.js"></script>
+<script data-cfasync="true" async="" data-rocketsrc="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" type="text/rocketscript" data-rocketoptimized="true"></script>
+<script data-cfasync="true" async="" data-rocketsrc="//s3.buysellads.com/ac/bsa.js" type="text/rocketscript" data-rocketoptimized="true"></script>
+<script data-cfasync="true" type="text/rocketscript" data-rocketoptimized="true">
+      (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-4625466825098355",
+        enable_page_level_ads: true
+      });
+    </script>
+ 
+<script data-cfasync="true" type="text/rocketscript" data-rocketoptimized="true">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-36045075-1', 'auto');
+        if (docCookies.getItem('is_scotcher')) {
+            ga('set', {
+                userId: docCookies.getItem('user_id'),  // signed in id
+                             // author
+                dimension1: 'Chris Sevilleja',
+                metric1: 'Chris Sevilleja',
+                                dimension2: true,                       // logged in or not
+                dimension3: false                       // pro user
+            });
+        }
+        ga('send', 'pageview');
+    </script>
+ 
+<script>
+        (function() {
+            var d = document, s = d.createElement('script');                    
+            s.src = '//scotchwebdevelopment.disqus.com/embed.js';                   
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+ 
+<script data-cfasync="true" type="text/rocketscript" data-rocketoptimized="true">
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+    document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '992053144150851');
+    fbq('track', "PageView");</script>
+<noscript>&lt;img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=992053144150851&amp;ev=PageView&amp;noscript=1"/&gt;</noscript>
+ 
+<script>
+        (function(h,o,t,j,a,r){
+            h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+            h._hjSettings={hjid:201487,hjsv:5};
+            a=o.getElementsByTagName('head')[0];
+            r=o.createElement('script');r.async=1;
+            r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+            a.appendChild(r);
+        })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
+    </script><p style="transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); margin: 0px;"></p>
+
+
+ 
+ 
+ 
+<script type="text/javascript" id="">!function(b,e,f,g,a,c,d){b.fbq||(a=b.fbq=function(){a.callMethod?a.callMethod.apply(a,arguments):a.queue.push(arguments)},b._fbq||(b._fbq=a),a.push=a,a.loaded=!0,a.version="2.0",a.queue=[],c=e.createElement(f),c.async=!0,c.src=g,d=e.getElementsByTagName(f)[0],d.parentNode.insertBefore(c,d))}(window,document,"script","//connect.facebook.net/en_US/fbevents.js");fbq("init","417778941754366");fbq("track","PageView");</script>
+<noscript>&lt;img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=417778941754366&amp;amp;ev=PageView&amp;amp;noscript=1"&gt;</noscript>
+
+
+<script type="text/javascript" id="">var google_conversion_id=956542766,google_custom_params=window.google_tag_params,google_remarketing_only=!0;</script>
+<script type="text/javascript" id="" src="./Creating a Single Page Todo App with Node and Angular _ Scotch_files/conversion.js"></script>
+<noscript>
+&lt;div style="display:inline;"&gt;
+&lt;img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/956542766/?value=0&amp;amp;guid=ON&amp;amp;script=0"&gt;
+&lt;/div&gt;
+</noscript><ins class="adsbygoogle" data-adsbygoogle-status="done" style="display: none; width: auto; height: auto;"><ins id="aswift_0_expand" style="display:inline-table;border:none;height:0px;margin:0;padding:0;position:relative;visibility:visible;width:0px;background-color:transparent"><ins id="aswift_0_anchor" style="display:block;border:none;height:0px;margin:0;padding:0;position:relative;visibility:visible;width:0px;background-color:transparent"><iframe width="0" height="0" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;" src="./Creating a Single Page Todo App with Node and Angular _ Scotch_files/saved_resource(3).html"></iframe></ins></ins></ins><div style="display: none; visibility: hidden;">
+
+<script type="text/javascript"></script>
+<script type="text/javascript" data-rocketsrc="//www.googleadservices.com/pagead/conversion.js" data-rocketoptimized="true"></script><script type="text/javascript" src="./Creating a Single Page Todo App with Node and Angular _ Scotch_files/conversion.js"></script><img height="1" width="1" border="0" alt="" src="https://googleads.g.doubleclick.net/pagead/viewthroughconversion/956542766/?random=1467911694187&amp;cv=8&amp;fst=1467911693643&amp;num=2&amp;fmt=1&amp;guid=ON&amp;u_h=1080&amp;u_w=1920&amp;u_ah=1040&amp;u_aw=1920&amp;u_cd=24&amp;u_his=1&amp;u_tz=-240&amp;u_java=false&amp;u_nplug=5&amp;u_nmime=7&amp;frm=0&amp;url=https%3A//scotch.io/tutorials/creating-a-single-page-todo-app-with-node-and-angular&amp;ref=https%3A//www.google.com/&amp;tiba=Creating%20a%20Single%20Page%20Todo%20App%20with%20Node%20and%20Angular%20%7C%20Scotch">
+<noscript></noscript></div><iframe id="rufous-sandbox" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen="true" style="position: absolute; visibility: hidden; display: none; width: 0px; height: 0px; padding: 0px; border: none;" src="./Creating a Single Page Todo App with Node and Angular _ Scotch_files/saved_resource(4).html"></iframe></body><div style="padding: 0px; margin: 3px 3px 20px; border: 3px solid rgba(243, 243, 243, 0.6); border-radius: 2px; box-shadow: rgb(102, 102, 102) 0px 0px 2px; visibility: visible; display: none; z-index: 2147483647; left: 0px; top: 12px; right: auto; bottom: auto; width: 0px; height: 0px; position: fixed !important; box-sizing: content-box !important; background: padding-box padding-box rgb(248, 248, 255);"><img alt="" style="display: block; position: relative; width: 100%; height: 100%; max-width: inherit; max-height: inherit; margin: 0px; padding: 0px; border: 0px; visibility: inherit !important; cursor: none; background: none;"><video poster="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA=" autoplay="" style="display: none; position: relative; width: 100%; height: 100%; max-width: inherit; max-height: inherit; margin: 0px; padding: 0px; border: 0px; box-shadow: rgb(241, 101, 41) 0px 0px 0px 1px; visibility: inherit !important; background: none;"></video><div style="left: 0px; right: auto; display: none; cursor: default; position: absolute; width: auto; height: auto; border: 0px; white-space: nowrap; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 13px; line-height: 1.4em; font-family: &quot;Trebuchet MS&quot;, sans-serif; box-shadow: rgb(221, 221, 221) 0px 0px 1px inset; padding: 0px 4px; border-radius: 3px; color: rgb(255, 255, 255) !important; top: -18px; background: rgba(0, 0, 0, 0.74902) !important;"><b style="display: none; transition: background-color 0.1s; border-radius: 3px; padding: 0px 2px;"></b> <b style="display: none;"></b> <span style="color: inherit; display: inline;">scotch.io code neat and clean</span></div></div><img alt="" draggable="false" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOng9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWluWU1pbiBub25lIj48Zz48cGF0aCBpZD0icCIgZD0iTTMzIDQyYTEgMSAwIDAgMSA1NS0yMCAzNiAzNiAwIDAgMC01NSAyMCIvPjx1c2UgeDpocmVmPSIjcCIgdHJhbnNmb3JtPSJyb3RhdGUoNzIgNTAgNTApIi8+PHVzZSB4OmhyZWY9IiNwIiB0cmFuc2Zvcm09InJvdGF0ZSgxNDQgNTAgNTApIi8+PHVzZSB4OmhyZWY9IiNwIiB0cmFuc2Zvcm09InJvdGF0ZSgyMTYgNTAgNTApIi8+PHVzZSB4OmhyZWY9IiNwIiB0cmFuc2Zvcm09InJvdGF0ZSgyODggNTAgNTApIi8+PGFuaW1hdGVUcmFuc2Zvcm0gYXR0cmlidXRlTmFtZT0idHJhbnNmb3JtIiB0eXBlPSJyb3RhdGUiIHZhbHVlcz0iMzYwIDUwIDUwOzAgNTAgNTAiIGR1cj0iMS44cyIgcmVwZWF0Q291bnQ9ImluZGVmaW5pdGUiLz48L2c+PC9zdmc+" style="padding: 5px; width: 38px; height: 38px; z-index: 2147483647; display: none; left: auto; top: auto; right: auto; bottom: auto; margin: 0px; transition: background-color 0.5s, opacity 0.2s ease, top 0.15s ease-out, left 0.15s ease-out; border-radius: 50% !important; box-shadow: rgb(166, 166, 166) 0px 0px 5px 1px !important; position: fixed !important; box-sizing: border-box !important; opacity: 0; background-color: rgb(255, 255, 255); background-clip: padding-box;"></html>
