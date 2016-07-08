@@ -309,7 +309,7 @@ gulp.task('default', [
 ///https://github.com/gulpjs/gulp/blob/master/docs/API.md
 ///But there was no mention of it. I did discover that you can manually run a specific gulp task in the command line:
 gulp less
-///So now LESS compilation is working. I check scratch.css and see:
+///So now LESS compilation is working. I check scratch.css and see the nested selector was processed:
 .outer {
   width: 100px;
   height: 100px;
@@ -323,3 +323,37 @@ gulp less
 ///I add a reference in index.html
 <link rel="stylesheet" href="css/scratch.css">
 ///I run the server again, and I see a black box with a smaller green box inside.
+
+///OK so what about Webpack? It seems like I can use webpack to bundle my files together.
+module.exports = {
+  entry: "./public/core.js",
+  output: {
+    filename: "./bundles/core-bundle.js"
+  },
+  watch:true
+}
+///But gulp can do that too. And gulp has other plugins I plan to use right away, and it seems easier to understand the usefulness of gulp, at least right now. 
+///Webpack says it is for handling module dependencies, and I don't even have any code yet. But I can use gulp right away to minify and bundle my CSS and JS.
+///I'm going to reorganize my files and folders now to take better advantage of this. 
+gulp.task('less', function () {
+  return gulp.src('./frontend/less/*.less')
+    .pipe(less({
+      paths: [ path.join(__dirname, 'less', 'includes') ]
+    }))
+    .pipe(uglifycss())
+    .pipe(concat('style.min.css'))
+    .pipe(gulp.dest('./public/css'))
+});
+
+///Now I am digging into Gulp a bit more. I really like what this can do. 
+///I start by adding some watches, so the minified bundles get updated as soon as I change them.
+gulp.watch('./frontend/less/*.less', ['less']);
+///Now when I run gulp, it doesn't return the command prompt. I can't run the server from the same command window while gulp is running. I want to figure that out next.
+///I install nodemon globally, and add it to my package as well. Gulp can start the server as a task.
+gulp.task('start', function () {
+  nodemon({
+    script: 'server.js'
+  , ext: 'js html'
+  })
+});
+
